@@ -93,7 +93,7 @@
             btnRegister.Name = "btnRegister";
             btnRegister.Size = new Size(200, 35);
             btnRegister.TabIndex = 6;
-            btnRegister.Text = "Crear Cuenta";
+            btnRegister.Text = "Crear Cuenta Como Cliente";
             btnRegister.UseVisualStyleBackColor = true;
             btnRegister.Click += btnRegister_Click;
 
