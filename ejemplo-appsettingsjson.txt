@@ -1,0 +1,5 @@
+﻿{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost,1433;Database=GestionPedidosDB;User Id="reemplaza tu user de tu bd";Password="Escribe tu contraseña aca";TrustServerCertificate=True;"
+  }
+}
