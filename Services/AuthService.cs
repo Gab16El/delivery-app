@@ -72,7 +72,6 @@ namespace DeliveryAppGrupo0008.Services
             return user?.Role?.RoleName == "Cliente";
         }
 
-        // Método auxiliar para hashear la contraseña con SHA256
         private string ComputeSha256Hash(string rawData)
         {
             using (SHA256 sha256Hash = SHA256.Create())

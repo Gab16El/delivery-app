@@ -20,23 +20,38 @@ namespace DeliveryAppGrupo0008.Forms
             var email = txtEmail.Text.Trim();
             var password = txtPassword.Text;
 
-            var usuario = _authService.Login(email, password);
+            var user = _authService.Login(email, password);
 
-            if (usuario != null)
+            if (user == null)
             {
-                // Login correcto
-                MessageBox.Show($"¡Bienvenido {usuario.Nombre} ({usuario.Role.RoleName})!", "Éxito");
+                MessageBox.Show("Correo o contraseña incorrectos.");
+                return;
+            }
 
-                // Abre el formulario principal
-                this.Hide();
-                var mainForm = new Form1(); // Puedes pasar el usuario si necesitas
-                mainForm.FormClosed += (s, args) => this.Close();
-                mainForm.Show();
+            // Redireccionar según el rol
+            Form dashboardForm;
+
+            if (_authService.IsAdmin(user))
+            {
+                dashboardForm = new AdminDashboardForm(user); // pasar usuario si querés
+            }
+            else if (_authService.IsEmpleado(user))
+            {
+                dashboardForm = new EmpleadoDashboardForm(user);
+            }
+            else if (_authService.IsCliente(user))
+            {
+                dashboardForm = new ClienteDashboardForm(user);
             }
             else
             {
-                MessageBox.Show("Credenciales inválidas. Intente nuevamente.", "Error de login");
+                MessageBox.Show("Rol desconocido.");
+                return;
             }
+
+            this.Hide();
+            dashboardForm.FormClosed += (s, args) => this.Close();
+            dashboardForm.Show();
         }
 
         private void lblPassword_Click(object sender, EventArgs e)
