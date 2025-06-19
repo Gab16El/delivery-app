@@ -18,6 +18,8 @@ namespace DeliveryAppGrupo0008.Forms
         {
             string nombre = txtNombre.Text.Trim();
             string email = txtEmail.Text.Trim();
+            string telefono = txtTelefono.Text.Trim();
+            string direccion = txtDireccion.Text.Trim();
             string password = txtPassword.Text;
             string confirmPassword = txtConfirmPassword.Text;
 
@@ -28,7 +30,7 @@ namespace DeliveryAppGrupo0008.Forms
             }
 
             // Por simplicidad, asignamos RoleID = 3 (Cliente)
-            bool result = _authService.Register(nombre, email, password, 3);
+            bool result = _authService.Register(nombre, email, password, 3, telefono, direccion);
 
             if (result)
             {

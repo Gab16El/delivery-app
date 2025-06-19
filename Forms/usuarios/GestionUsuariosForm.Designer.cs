@@ -23,6 +23,12 @@
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.TextBox txtConfirmPassword;
 
+        private System.Windows.Forms.Label lblTelefono;
+        private System.Windows.Forms.Label lblDireccion;
+        private System.Windows.Forms.TextBox txtTelefono;
+        private System.Windows.Forms.TextBox txtDireccion;
+
+
         private System.Windows.Forms.Button btnAgregarUsuario;
 
         protected override void Dispose(bool disposing)
@@ -45,6 +51,12 @@
             txtNombre = new TextBox();
             lblEmail = new Label();
             txtEmail = new TextBox();
+            // Inicializar los nuevos controles
+            lblTelefono = new Label();
+            lblDireccion = new Label();
+            txtTelefono = new TextBox();
+            txtDireccion = new TextBox();
+
             lblPassword = new Label();
             txtPassword = new TextBox();
             lblRole = new Label();
@@ -56,13 +68,7 @@
             ((System.ComponentModel.ISupportInitialize)dgvUsuarios).BeginInit();
             tabPageAgregar.SuspendLayout();
             SuspendLayout();
-            // 
-            // cmbRol
-            // 
-            cmbRol.Location = new Point(161, 107);
-            cmbRol.Name = "cmbRol";
-            cmbRol.Size = new Size(200, 23);
-            cmbRol.TabIndex = 6;
+
             // 
             // tabControlUsuarios
             // 
@@ -108,6 +114,10 @@
             tabPageAgregar.Controls.Add(txtPassword);
             tabPageAgregar.Controls.Add(lblRole);
             tabPageAgregar.Controls.Add(cmbRol);
+            tabPageAgregar.Controls.Add(lblTelefono);
+            tabPageAgregar.Controls.Add(txtTelefono);
+            tabPageAgregar.Controls.Add(lblDireccion);
+            tabPageAgregar.Controls.Add(txtDireccion);
             tabPageAgregar.Controls.Add(lblConfirmPassword);
             tabPageAgregar.Controls.Add(txtConfirmPassword);
             tabPageAgregar.Controls.Add(btnAgregarUsuario);
@@ -157,7 +167,7 @@
             lblPassword.Location = new Point(30, 153);
             lblPassword.Name = "lblPassword";
             lblPassword.Size = new Size(70, 15);
-            lblPassword.TabIndex = 7;
+            lblPassword.TabIndex = 4;
             lblPassword.Text = "Contraseña:";
             // 
             // txtPassword
@@ -166,7 +176,7 @@
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '*';
             txtPassword.Size = new Size(200, 23);
-            txtPassword.TabIndex = 4;
+            txtPassword.TabIndex = 5;
             // 
             // lblRole
             // 
@@ -174,33 +184,69 @@
             lblRole.Location = new Point(30, 115);
             lblRole.Name = "lblRole";
             lblRole.Size = new Size(27, 15);
-            lblRole.TabIndex = 5;
+            lblRole.TabIndex = 6;
             lblRole.Text = "Rol:";
+
+            // 
+            // cmbRol
+            // 
+            cmbRol.Location = new Point(161, 107);
+            cmbRol.Name = "cmbRol";
+            cmbRol.Size = new Size(200, 23);
+            cmbRol.TabIndex = 7;
+
+            // lblTelefono
+            lblTelefono.AutoSize = true;
+            lblTelefono.Location = new Point(30, 190);
+            lblTelefono.Name = "lblTelefono";
+            lblTelefono.Size = new Size(60, 15);
+            lblTelefono.TabIndex = 8;
+            lblTelefono.Text = "Teléfono:";
+
+            // txtTelefono
+            txtTelefono.Location = new Point(161, 182);
+            txtTelefono.Name = "txtTelefono";
+            txtTelefono.Size = new Size(200, 23);
+            txtTelefono.TabIndex = 9;
+
+            // lblDireccion
+            lblDireccion.AutoSize = true;
+            lblDireccion.Location = new Point(30, 230);
+            lblDireccion.Name = "lblDireccion";
+            lblDireccion.Size = new Size(60, 15);
+            lblDireccion.TabIndex = 10;
+            lblDireccion.Text = "Dirección:";
+
+            // txtDireccion
+            txtDireccion.Location = new Point(161, 222);
+            txtDireccion.Name = "txtDireccion";
+            txtDireccion.Size = new Size(200, 23);
+            txtDireccion.TabIndex = 11;
             // 
             // lblConfirmPassword
             // 
             lblConfirmPassword.AutoSize = true;
-            lblConfirmPassword.Location = new Point(30, 190);
+            lblConfirmPassword.Location = new Point(30, 270);
             lblConfirmPassword.Name = "lblConfirmPassword";
             lblConfirmPassword.Size = new Size(125, 15);
-            lblConfirmPassword.TabIndex = 8;
+            lblConfirmPassword.TabIndex = 12;
             lblConfirmPassword.Text = "Confirmar contraseña:";
             lblConfirmPassword.Click += lblConfirmPassword_Click;
             // 
             // txtConfirmPassword
             // 
-            txtConfirmPassword.Location = new Point(161, 182);
+            txtConfirmPassword.Location = new Point(161, 262);
             txtConfirmPassword.Name = "txtConfirmPassword";
             txtConfirmPassword.PasswordChar = '*';
             txtConfirmPassword.Size = new Size(200, 23);
-            txtConfirmPassword.TabIndex = 7;
+            txtConfirmPassword.TabIndex = 13;
             // 
             // btnAgregarUsuario
             // 
-            btnAgregarUsuario.Location = new Point(98, 230);
+            btnAgregarUsuario.Location = new Point(98, 310);
             btnAgregarUsuario.Name = "btnAgregarUsuario";
             btnAgregarUsuario.Size = new Size(157, 30);
-            btnAgregarUsuario.TabIndex = 9;
+            btnAgregarUsuario.TabIndex = 14;
             btnAgregarUsuario.Text = "Agregar Usuario";
             btnAgregarUsuario.UseVisualStyleBackColor = true;
             btnAgregarUsuario.Click += BtnAgregarUsuario_Click;

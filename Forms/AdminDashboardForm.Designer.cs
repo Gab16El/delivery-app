@@ -28,6 +28,7 @@ namespace DeliveryAppGrupo0008.Forms
             btn.FlatAppearance.BorderSize = 0;
             btn.FlatStyle = FlatStyle.Flat;
             btn.Font = new Font("Segoe UI", 10F);
+
             btn.ForeColor = Color.White;
             btn.ImageAlign = ContentAlignment.MiddleLeft;
             btn.ImageKey = iconKey;
@@ -55,6 +56,8 @@ namespace DeliveryAppGrupo0008.Forms
             panelMain = new Panel();
             sidebar = new Panel();
             iconList = new ImageList(components);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
 
             // Botones
             btnGestionUsuarios = new Button();
@@ -65,11 +68,7 @@ namespace DeliveryAppGrupo0008.Forms
             btnReportes = new Button();
             btnCerrarSesion = new Button();
 
-            btnGestionUsuarios.Click += (s, e) =>
-            {
-                var gestionUsuariosForm = new DeliveryAppGrupo0008.Forms.usuarios.GestionUsuariosForm(_userService);
-                CargarModuloEnPanel(gestionUsuariosForm);
-            };
+
 
             sidebar.SuspendLayout();
             SuspendLayout();

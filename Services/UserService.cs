@@ -24,7 +24,7 @@ namespace DeliveryAppGrupo0008.Services
         }
 
         // Registrar usuario nuevo
-        public bool RegistrarUsuario(string nombre, string email, string password, int roleId)
+        public bool RegistrarUsuario(string nombre, string email, string password, int roleId, string telefono, string direccion)
         {
             email = email.Trim().ToLower();
 
@@ -40,6 +40,8 @@ namespace DeliveryAppGrupo0008.Services
                 Email = email,
                 PasswordHash = ComputeSha256Hash(password),
                 RoleID = roleId,
+                Telefono = telefono,
+                Direccion = direccion,
                 FechaRegistro = DateTime.Now
             };
 

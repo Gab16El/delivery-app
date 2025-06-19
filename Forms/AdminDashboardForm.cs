@@ -33,14 +33,21 @@ namespace DeliveryAppGrupo0008.Forms
         {
             ConfigurarBotones();
             MostrarBienvenida();
-
+            btnGestionUsuarios.Click += BtnGestionUsuarios_Click;
         }
 
         private void btnReportes_Click(object sender, EventArgs e)
         {
 
         }
-        
+
+        private void BtnGestionUsuarios_Click(object sender, EventArgs e)
+        {
+            var gestionUsuariosForm = new DeliveryAppGrupo0008.Forms.usuarios.GestionUsuariosForm(_userService);
+            CargarModuloEnPanel(gestionUsuariosForm);
+        }
+
+
         private void ConfigurarBotones()
         {
             ConfigurarBoton(btnGestionUsuarios, "Usuarios", "usuarios");

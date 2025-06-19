@@ -31,13 +31,12 @@ namespace DeliveryAppGrupo0008.Services
             return user;
         }
 
-        public bool Register(string nombre, string email, string password, int roleId)
+        public bool Register(string nombre, string email, string password, int roleId, string telefono, string direccion)
         {
             email = email.Trim().ToLower();
 
             if (_context.Usuarios.Any(u => u.Email.ToLower() == email))
             {
-                // El usuario ya existe
                 return false;
             }
 
@@ -47,6 +46,8 @@ namespace DeliveryAppGrupo0008.Services
                 Email = email,
                 PasswordHash = ComputeSha256Hash(password),
                 RoleID = roleId,
+                Telefono = telefono,
+                Direccion = direccion,
                 FechaRegistro = DateTime.Now
             };
 
