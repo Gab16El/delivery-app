@@ -40,5 +40,10 @@ namespace DeliveryAppGrupo0008.Forms
                 MessageBox.Show("El usuario ya existe.", "Error");
             }
         }
+
+        private void RegisterForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
