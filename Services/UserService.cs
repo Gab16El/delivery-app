@@ -8,6 +8,7 @@ namespace DeliveryAppGrupo0008.Services
     public class UserService
     {
         private readonly DeliveryContext _context;
+        private const int PROVEEDOR_ROLE_ID = 4;
 
         public UserService(DeliveryContext context)
         {
@@ -20,6 +21,15 @@ namespace DeliveryAppGrupo0008.Services
             return _context.Usuarios
                 .Include(u => u.Role)
                 .AsNoTracking()
+                .ToList();
+        }
+
+        public List<Usuario> GetProveedores()
+        {
+            return _context.Usuarios
+                .Include(u => u.Role)
+                .AsNoTracking()
+                .Where(u => u.RoleID == PROVEEDOR_ROLE_ID)
                 .ToList();
         }
 
