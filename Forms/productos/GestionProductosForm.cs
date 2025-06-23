@@ -1,5 +1,6 @@
 ﻿using DeliveryAppGrupo0008.Models;
 using DeliveryAppGrupo0008.Services;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -30,16 +31,26 @@ namespace DeliveryAppGrupo0008.Forms.productos
 
         private void CargarProductosEnGrid()
         {
-            var productos = _productService.GetProductos();
+            var productos = _productService.GetProductosConProveedor()
+                .Select(p => new
+                {
+                    p.ProductoID,
+                    p.Nombre,
+                    p.Descripcion,
+                    p.Precio,
+                    p.ProveedorID,
+                    NombreProveedor = p.Proveedor?.Nombre ?? ""
+                })
+                .ToList();
 
-            dgvProductos.DataSource = productos.Select(p => new
-            {
-                p.ProductoID,
-                p.Nombre,
-                p.Descripcion,
-                p.Precio,
-                p.ProveedorID
-            }).ToList();
+            dgvProductos.DataSource = productos;
+
+            dgvProductos.Columns["ProductoID"].HeaderText = "ID Producto";
+            dgvProductos.Columns["Nombre"].HeaderText = "Nombre";
+            dgvProductos.Columns["Descripcion"].HeaderText = "Descripción";
+            dgvProductos.Columns["Precio"].HeaderText = "Precio";
+            dgvProductos.Columns["ProveedorID"].HeaderText = "ID Proveedor";
+            dgvProductos.Columns["NombreProveedor"].HeaderText = "Proveedor";
         }
 
         private void CargarProveedoresEnCombo()

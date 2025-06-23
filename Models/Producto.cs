@@ -15,5 +15,8 @@ namespace DeliveryAppGrupo0008.Models
         public string Descripcion { get; set; }
 
         public decimal Precio { get; set; }
+
+        public Usuario Proveedor { get; set; }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DeliveryAppGrupo0008.Models;
+using Microsoft.EntityFrameworkCore;
 
     public class ProductService
     {
@@ -14,7 +15,13 @@
             return _context.Productos.ToList();
         }
 
-        public bool RegistrarProducto(int proveedorId, string nombre, string descripcion, decimal precio)
+        public List<Producto> GetProductosConProveedor()
+        {
+            return _context.Productos.Include(p => p.Proveedor).AsNoTracking().ToList();
+        }
+
+
+    public bool RegistrarProducto(int proveedorId, string nombre, string descripcion, decimal precio)
         {
             try
             {

@@ -26,10 +26,10 @@ namespace DeliveryAppGrupo0008.Services
 
         public List<Usuario> GetProveedores()
         {
+            int proveedorRoleId = 4; 
             return _context.Usuarios
-                .Include(u => u.Role)
+                .Where(u => u.RoleID == proveedorRoleId)
                 .AsNoTracking()
-                .Where(u => u.RoleID == PROVEEDOR_ROLE_ID)
                 .ToList();
         }
 
