@@ -1,33 +1,37 @@
-﻿
-using DeliveryAppGrupo0008.Services;
+﻿using DeliveryAppGrupo0008.Services;
 using DeliveryAppGrupo0008.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace DeliveryAppGrupo0008.Forms.usuarios
 {
     public partial class GestionUsuariosForm : Form
     {
-
         private UserService _userService;
-
-        private List<Usuario> listaUsuarios = new List<Usuario>();
 
         public GestionUsuariosForm(UserService userService)
         {
             InitializeComponent();
             _userService = userService;
-
-
         }
 
         private void GestionUsuariosForm_Load(object sender, EventArgs e)
         {
-            CargarUsuariosEnGrid();
             CargarRolesEnComboBox();
+            CargarFiltroRoles();
+            CargarUsuariosEnGrid();
         }
 
-        private void CargarUsuariosEnGrid()
+        private void CargarUsuariosEnGrid(int roleId = 0)
         {
             var usuarios = _userService.GetUsuarios();
+
+            if (roleId != 0)
+            {
+                usuarios = usuarios.Where(u => u.RoleID == roleId).ToList();
+            }
 
             dgvUsuarios.DataSource = usuarios.Select(u => new
             {
@@ -36,7 +40,6 @@ namespace DeliveryAppGrupo0008.Forms.usuarios
                 u.Email,
                 Rol = u.Role.RoleName,
                 FechaRegistro = u.FechaRegistro.ToString("dd/MM/yyyy"),
-                // Si tienes más campos, ejemplo:
                 u.Telefono,
                 u.Direccion,
             }).ToList();
@@ -48,7 +51,6 @@ namespace DeliveryAppGrupo0008.Forms.usuarios
             string email = txtEmail.Text.Trim();
             string password = txtPassword.Text;
             string confirmPassword = txtConfirmPassword.Text;
-
             string telefono = txtTelefono.Text.Trim();
             string direccion = txtDireccion.Text.Trim();
 
@@ -73,11 +75,7 @@ namespace DeliveryAppGrupo0008.Forms.usuarios
             if (registrado)
             {
                 MessageBox.Show("Usuario registrado correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                txtNombre.Text = "";
-                txtEmail.Text = "";
-                txtPassword.Text = "";
-                txtConfirmPassword.Text = "";
-                cmbRol.SelectedIndex = 0;
+                LimpiarCamposAgregar();
                 CargarUsuariosEnGrid();
                 tabControlUsuarios.SelectedTab = tabPageLista;
             }
@@ -87,21 +85,25 @@ namespace DeliveryAppGrupo0008.Forms.usuarios
             }
         }
 
+        private void LimpiarCamposAgregar()
+        {
+            txtNombre.Clear();
+            txtEmail.Clear();
+            txtPassword.Clear();
+            txtConfirmPassword.Clear();
+            txtTelefono.Clear();
+            txtDireccion.Clear();
+            cmbRol.SelectedIndex = 0;
+        }
+
         private void CargarRolesEnComboBox()
         {
-            if (cmbRol == null)
-            {
-                MessageBox.Show("cmbRol es null. Verifica que lo hayas agregado al formulario.");
-                return;
-            }
-
             var roles = new List<KeyValuePair<int, string>>
             {
                 new KeyValuePair<int, string>(1, "Administrador"),
                 new KeyValuePair<int, string>(2, "Cliente"),
                 new KeyValuePair<int, string>(3, "Trabajador"),
                 new KeyValuePair<int, string>(4, "Proveedor")
-
             };
 
             cmbRol.DataSource = roles;
@@ -109,15 +111,29 @@ namespace DeliveryAppGrupo0008.Forms.usuarios
             cmbRol.ValueMember = "Key";
         }
 
-        private void tabPageAgregar_Click(object sender, EventArgs e)
+        private void CargarFiltroRoles()
         {
+            var roles = new List<KeyValuePair<int, string>>
+            {
+                new KeyValuePair<int, string>(0, "Todos"),
+                new KeyValuePair<int, string>(1, "Administrador"),
+                new KeyValuePair<int, string>(2, "Cliente"),
+                new KeyValuePair<int, string>(3, "Trabajador"),
+                new KeyValuePair<int, string>(4, "Proveedor")
+            };
 
+            cmbFiltroRol.DataSource = roles;
+            cmbFiltroRol.DisplayMember = "Value";
+            cmbFiltroRol.ValueMember = "Key";
+            cmbFiltroRol.SelectedIndex = 0;
         }
 
-        private void lblConfirmPassword_Click(object sender, EventArgs e)
+        private void CmbFiltroRol_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (cmbFiltroRol.SelectedValue is int roleId)
+            {
+                CargarUsuariosEnGrid(roleId);
+            }
         }
     }
-
 }

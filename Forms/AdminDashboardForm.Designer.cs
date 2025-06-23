@@ -10,7 +10,6 @@ namespace DeliveryAppGrupo0008.Forms
         
         private Panel sidebar;
         private Button btnGestionUsuarios;
-        private Button btnGestionProveedores;
         private Button btnGestionProductos;
         private Button btnGestionZonas;
         private Button btnGestionPedidos;
@@ -61,7 +60,6 @@ namespace DeliveryAppGrupo0008.Forms
 
             // Botones
             btnGestionUsuarios = new Button();
-            btnGestionProveedores = new Button();
             btnGestionProductos = new Button();
             btnGestionZonas = new Button();
             btnGestionPedidos = new Button();
@@ -85,7 +83,6 @@ namespace DeliveryAppGrupo0008.Forms
             sidebar.AutoScroll = true;
             sidebar.BackColor = Color.FromArgb(30, 30, 30);
             sidebar.Controls.Add(btnGestionUsuarios);
-            sidebar.Controls.Add(btnGestionProveedores);
             sidebar.Controls.Add(btnGestionProductos);
             sidebar.Controls.Add(btnGestionZonas);
             sidebar.Controls.Add(btnGestionPedidos);

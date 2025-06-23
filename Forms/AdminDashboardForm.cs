@@ -53,7 +53,6 @@ namespace DeliveryAppGrupo0008.Forms
         private void ConfigurarBotones()
         {
             ConfigurarBoton(btnGestionUsuarios, "Usuarios", "usuarios");
-            ConfigurarBoton(btnGestionProveedores, "Proveedores", "proveedores");
             ConfigurarBoton(btnGestionProductos, "Productos", "productos");
             ConfigurarBoton(btnGestionZonas, "Zonas/Rutas", "zonas");
             ConfigurarBoton(btnGestionPedidos, "Pedidos", "pedidos");
