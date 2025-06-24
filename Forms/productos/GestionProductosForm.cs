@@ -1,11 +1,6 @@
 ﻿using DeliveryAppGrupo0008.Models;
 using DeliveryAppGrupo0008.Services;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
+
 
 namespace DeliveryAppGrupo0008.Forms.productos
 {
@@ -21,6 +16,8 @@ namespace DeliveryAppGrupo0008.Forms.productos
             InitializeComponent();
             _productService = productService;
             _userService = userService;
+
+            btnAgregarProducto.Click += BtnAgregarProducto_Click;
         }
 
         private void GestionProductosForm_Load(object sender, EventArgs e)

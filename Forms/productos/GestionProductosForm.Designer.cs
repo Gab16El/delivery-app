@@ -135,7 +135,6 @@
             btnAgregarProducto.Text = "Agregar Producto";
             btnAgregarProducto.Location = new Point(leftInput, top + 10);
             btnAgregarProducto.Size = new Size(160, 30);
-            btnAgregarProducto.Click += BtnAgregarProducto_Click;
 
             // 
             // GestionProductosForm

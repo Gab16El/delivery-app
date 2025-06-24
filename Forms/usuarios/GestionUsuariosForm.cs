@@ -116,8 +116,6 @@ namespace DeliveryAppGrupo0008.Forms.usuarios
             var roles = new List<KeyValuePair<int, string>>
             {
                 new KeyValuePair<int, string>(0, "Todos"),
-                new KeyValuePair<int, string>(1, "Administrador"),
-                new KeyValuePair<int, string>(2, "Cliente"),
                 new KeyValuePair<int, string>(3, "Trabajador"),
                 new KeyValuePair<int, string>(4, "Proveedor")
             };
