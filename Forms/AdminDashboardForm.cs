@@ -12,6 +12,7 @@ namespace DeliveryAppGrupo0008.Forms
 
         private DeliveryContext _context;
         private UserService _userService;
+        private ZoneService _zonaService;
         private ProductService _productService;
 
         public AdminDashboardForm(Usuario usuario)
@@ -23,6 +24,7 @@ namespace DeliveryAppGrupo0008.Forms
             _context = Program.DbContext;
             _userService = new UserService(_context);
             _productService = new ProductService(_context);
+            _zonaService = new ZoneService(_context);
 
         }
 
@@ -68,6 +70,12 @@ namespace DeliveryAppGrupo0008.Forms
             {
                 var gestioProductosForm = new DeliveryAppGrupo0008.Forms.productos.GestionProductosForm(_productService, _userService);
                 CargarModuloEnPanel(gestioProductosForm);
+            };
+
+            btnGestionZonas.Click += (s, e) =>
+            {
+                var gestionZonasForm = new DeliveryAppGrupo0008.Forms.zonas.GestionZonasForm(_zonaService);
+                CargarModuloEnPanel(gestionZonasForm);
             };
         }
 

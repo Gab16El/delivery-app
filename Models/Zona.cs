@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace DeliveryAppGrupo0008.Models
 {
     public class Zona
@@ -13,5 +12,7 @@ namespace DeliveryAppGrupo0008.Models
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
 
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal PrecioDelivery { get; set; }
     }
 }
