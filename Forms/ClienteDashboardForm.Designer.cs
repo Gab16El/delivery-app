@@ -116,7 +116,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(sidebar);
             Controls.Add(lblWelcome);
-            Name = "ProveedorDashboardForm";
+            Name = "ClienteDashboardForm";
             Text = "Panel de Clientes";
             Load += AdminDashboardForm_Load;
             sidebar.ResumeLayout(false);

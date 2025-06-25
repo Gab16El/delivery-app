@@ -115,5 +115,45 @@ namespace DeliveryAppGrupo0008.Services
                 return false;
             }
         }
+
+        public List<Pedido> GetPedidosPorDelivery(int deliveryId)
+        {
+            return _context.Pedidos
+                .Include(p => p.Cliente)
+                .Include(p => p.Zona)
+                .Include(p => p.Estado)
+                .Include(p => p.Detalles)
+                    .ThenInclude(d => d.Producto)
+                        .ThenInclude(prod => prod.Proveedor)
+                .Include(p => p.Delivery)
+                .Where(p => p.DeliveryID == deliveryId)
+                .AsNoTracking()
+                .ToList();
+        }
+
+        public bool CambiarEstadoPedido(int pedidoId, int nuevoEstadoId, DateTime? fechaEntrega = null)
+        {
+            try
+            {
+                var pedido = _context.Pedidos.Find(pedidoId);
+                if (pedido == null) return false;
+
+                pedido.EstadoID = nuevoEstadoId;
+
+                if (fechaEntrega.HasValue)
+                {
+                    pedido.FechaEntrega = fechaEntrega.Value;
+                }
+
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Aquí puedes loguear el error si tienes un logger
+                return false;
+            }
+        }
+
     }
 }

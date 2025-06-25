@@ -1,9 +1,6 @@
 ﻿using DeliveryAppGrupo0008.Models;
 using DeliveryAppGrupo0008.Services;
 using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using System.Collections.Generic;
 
 namespace DeliveryAppGrupo0008.Forms.pedidos
 {
@@ -56,7 +53,9 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
                 pedidos = _pedidoService.GetPedidos(usuarioId);
             else if (rolId == 3) // Cliente
                 pedidos = _pedidoService.GetPedidosPorCliente(usuarioId);
-            else
+            else if (rolId == 2) // Empleado / Delivery
+                pedidos = _pedidoService.GetPedidosPorDelivery(usuarioId);
+            else // Admin u otros roles
                 pedidos = _pedidoService.GetPedidos();
 
             var pedidosVista = pedidos.Select(p => new
@@ -69,7 +68,7 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
                 EstadoID = p.EstadoID,
                 Estado = p.Estado?.Estado,
                 p.FechaPedido,
-                FechaEntrega = p.FechaEntrega?.ToString("dd/MM/yyyy") ?? "Pendiente",
+                FechaEntrega = p.FechaEntrega?.ToString("dd/MM/yyyy HH:mm:ss") ?? "Pendiente",
                 Total = p.Total.ToString("C"),
                 DeliveryNombre = p.Delivery?.Nombre ?? "No asignado"
             }).ToList();
@@ -82,17 +81,9 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
             dgvPedidos.Columns["PedidoID"].Visible = false;
             dgvPedidos.Columns["EstadoID"].Visible = false;
 
-            if (rolId == 3) // Cliente: mostrar columna DeliveryNombre
+            // Agregar botones según rol
+            if (rolId == 1) // Admin: botón para asignar delivery
             {
-                if (dgvPedidos.Columns.Contains("DeliveryNombre"))
-                {
-                    dgvPedidos.Columns["DeliveryNombre"].HeaderText = "Delivery Asignado";
-                    dgvPedidos.Columns["DeliveryNombre"].DisplayIndex = 6; // tercera columna
-                }
-            }
-            else
-            {
-                // Para proveedores/admin: agregar botón para asignar delivery
                 var btnAsignar = new DataGridViewButtonColumn
                 {
                     Name = "AsignarDelivery",
@@ -103,12 +94,55 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
                 };
                 dgvPedidos.Columns.Add(btnAsignar);
 
-                // Deshabilitar botón si estado != pendiente (1)
                 foreach (DataGridViewRow row in dgvPedidos.Rows)
                 {
                     int estadoId = Convert.ToInt32(row.Cells["EstadoID"].Value);
                     row.Cells["AsignarDelivery"].ReadOnly = estadoId != 1;
                     row.Cells["AsignarDelivery"].Style.ForeColor = estadoId == 1 ? Color.Black : Color.Gray;
+                }
+            }
+            else if (rolId == 2) // Delivery / Empleado: botones aceptar y cancelar pedido
+            {
+                var btnAceptar = new DataGridViewButtonColumn
+                {
+                    Name = "AceptarPedido",
+                    HeaderText = "Entregar Delivery",
+                    Text = "Entregar Delivery",
+                    UseColumnTextForButtonValue = true,
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                };
+                dgvPedidos.Columns.Add(btnAceptar);
+
+                var btnCancelar = new DataGridViewButtonColumn
+                {
+                    Name = "CancelarPedido",
+                    HeaderText = "Cancelar",
+                    Text = "Cancelar",
+                    UseColumnTextForButtonValue = true,
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                };
+                dgvPedidos.Columns.Add(btnCancelar);
+
+                foreach (DataGridViewRow row in dgvPedidos.Rows)
+                {
+                    int estadoId = Convert.ToInt32(row.Cells["EstadoID"].Value);
+
+                    // Solo habilitar Aceptar si estado es aceptado (2)
+                    row.Cells["AceptarPedido"].ReadOnly = estadoId != 2;
+                    row.Cells["AceptarPedido"].Style.ForeColor = estadoId == 2 ? Color.Black : Color.Gray;
+
+                    // Solo habilitar Cancelar si estado es aceptado (2) o pendiente (1)
+                    bool canCancel = estadoId == 1 || estadoId == 2; // <-- Aquí la restricción para no permitir cancelar entregados
+                    row.Cells["CancelarPedido"].ReadOnly = !canCancel;
+                    row.Cells["CancelarPedido"].Style.ForeColor = canCancel ? Color.Black : Color.Gray;
+                }
+            }
+            else if (rolId == 3) // Cliente: mostrar columna DeliveryNombre
+            {
+                if (dgvPedidos.Columns.Contains("DeliveryNombre"))
+                {
+                    dgvPedidos.Columns["DeliveryNombre"].HeaderText = "Delivery Asignado";
+                    dgvPedidos.Columns["DeliveryNombre"].DisplayIndex = 6;
                 }
             }
 
@@ -119,16 +153,40 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
         private void DgvPedidos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             int rolId = Program.UsuarioLogueado.RoleID;
+            if (e.RowIndex < 0) return;
 
-            if (rolId == 3) return; // Clientes no asignan delivery
-
-            if (dgvPedidos.Columns[e.ColumnIndex].Name == "AsignarDelivery" && e.RowIndex >= 0)
+            if (rolId == 2) // Delivery - aceptar o cancelar
             {
-                int estadoId = Convert.ToInt32(dgvPedidos.Rows[e.RowIndex].Cells["EstadoID"].Value);
-                if (estadoId != 1) return; // Solo pendiente
-
+                var columnName = dgvPedidos.Columns[e.ColumnIndex].Name;
                 int pedidoId = Convert.ToInt32(dgvPedidos.Rows[e.RowIndex].Cells["PedidoID"].Value);
-                AsignarDelivery(pedidoId);
+                int estadoId = Convert.ToInt32(dgvPedidos.Rows[e.RowIndex].Cells["EstadoID"].Value);
+
+                if (columnName == "AceptarPedido" && estadoId == 2) // Sólo aceptar si está en proceso (asignado)
+                {
+                    bool exito = _pedidoService.CambiarEstadoPedido(pedidoId, 3, DateTime.Now); // 3 = entregado + fecha y hora actual
+                    if (exito)
+                    {
+                        MessageBox.Show("Pedido entregado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        CargarPedidosEnGrid();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al entregar el pedido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else if (columnName == "CancelarPedido" && (estadoId == 1 || estadoId == 2)) // <-- Quité estadoId == 3 para impedir cancelar entregados
+                {
+                    bool exito = _pedidoService.CambiarEstadoPedido(pedidoId, 4); // 4 = cancelado
+                    if (exito)
+                    {
+                        MessageBox.Show("Pedido cancelado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        CargarPedidosEnGrid();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al cancelar el pedido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
         }
 
@@ -170,7 +228,6 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
                 {
                     int deliveryId = (int)cmbDeliveries.SelectedValue;
                     bool resultado = _pedidoService.AsignarDeliveryYPasarEstado(pedidoId, deliveryId);
-
                     if (resultado)
                     {
                         MessageBox.Show("Delivery asignado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -178,7 +235,7 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
                     }
                     else
                     {
-                        MessageBox.Show("Error al asignar delivery.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Error al asignar el delivery.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
