@@ -77,6 +77,7 @@
             dgvProductos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvProductos.Size = new Size(786, 416);
             dgvProductos.TabIndex = 0;
+            dgvProductos.ScrollBars = ScrollBars.Both;
 
             // 
             // tabPageAgregar

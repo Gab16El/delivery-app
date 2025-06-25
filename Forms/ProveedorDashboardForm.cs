@@ -20,6 +20,7 @@ namespace DeliveryAppGrupo0008.Forms
 
         private DeliveryContext _context;
         private UserService _userService;
+        private ReporteService _reporteService;
         private ZoneService _zonaService;
         private PedidoService _pedidoService;
         private ProductService _productService;
@@ -91,6 +92,12 @@ namespace DeliveryAppGrupo0008.Forms
                 var gestionPedidosForm = new DeliveryAppGrupo0008.Forms.pedidos.GestionPedidosForm(_pedidoService, _productService, _zonaService);
                 CargarModuloEnPanel(gestionPedidosForm);
 
+            };
+
+            btnReportes.Click += (s, e) =>
+            {
+                var gestionReportesForm = new DeliveryAppGrupo0008.Forms.reportes.GestionReportesForm(_reporteService);
+                CargarModuloEnPanel(gestionReportesForm);
             };
         }
 

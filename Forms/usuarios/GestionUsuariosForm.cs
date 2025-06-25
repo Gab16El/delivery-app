@@ -38,8 +38,7 @@ namespace DeliveryAppGrupo0008.Forms.usuarios
                 // Solo puede ver y agregar trabajadores (RoleID=2) que pertenezcan a él
                 cmbFiltroRol.Enabled = false; // No puede filtrar otros roles
                 cmbRol.Enabled = true;
-                // Ajustar combo de rol para solo Trabajador
-                cmbRol.  = new List<KeyValuePair<int, string>>
+                cmbRol.DataSource = new List<KeyValuePair<int, string>>
                 {
                     new KeyValuePair<int, string>(2, "Trabajador")
                 };
