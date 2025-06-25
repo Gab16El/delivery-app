@@ -35,13 +35,13 @@ namespace DeliveryAppGrupo0008.Forms.usuarios
             }
             else if (rolId == 4) // Proveedor
             {
-                // Solo puede ver y agregar trabajadores (RoleID=3) que pertenezcan a él
+                // Solo puede ver y agregar trabajadores (RoleID=2) que pertenezcan a él
                 cmbFiltroRol.Enabled = false; // No puede filtrar otros roles
                 cmbRol.Enabled = true;
                 // Ajustar combo de rol para solo Trabajador
-                cmbRol.DataSource = new List<KeyValuePair<int, string>>
+                cmbRol.  = new List<KeyValuePair<int, string>>
                 {
-                    new KeyValuePair<int, string>(3, "Trabajador")
+                    new KeyValuePair<int, string>(2, "Trabajador")
                 };
                 cmbRol.DisplayMember = "Value";
                 cmbRol.ValueMember = "Key";
@@ -59,7 +59,7 @@ namespace DeliveryAppGrupo0008.Forms.usuarios
             var roles = new List<KeyValuePair<int, string>>
             {
                 new KeyValuePair<int, string>(1, "Administrador"),
-                new KeyValuePair<int, string>(2, "Cliente"),
+                new KeyValuePair<int, string>(3, "Cliente"),
                 new KeyValuePair<int, string>(4, "Proveedor")
             };
 
@@ -75,8 +75,8 @@ namespace DeliveryAppGrupo0008.Forms.usuarios
             {
                 new KeyValuePair<int, string>(0, "Todos"),
                 new KeyValuePair<int, string>(1, "Administrador"),
-                new KeyValuePair<int, string>(2, "Cliente"),
-                new KeyValuePair<int, string>(3, "Trabajador"),
+                new KeyValuePair<int, string>(2, "Trabajador"),
+                new KeyValuePair<int, string>(3, "Cliente"),
                 new KeyValuePair<int, string>(4, "Proveedor")
             };
 
@@ -92,8 +92,8 @@ namespace DeliveryAppGrupo0008.Forms.usuarios
             {
                 new KeyValuePair<int, string>(0, "Todos"),
                 new KeyValuePair<int, string>(1, "Administrador"),
-                new KeyValuePair<int, string>(2, "Cliente"),
-                new KeyValuePair<int, string>(3, "Trabajador"),
+                new KeyValuePair<int, string>(2, "Trabajador"),
+                new KeyValuePair<int, string>(3, "Cliente"),
                 new KeyValuePair<int, string>(4, "Proveedor")
             };
 
@@ -181,7 +181,7 @@ namespace DeliveryAppGrupo0008.Forms.usuarios
             if (Program.UsuarioLogueado.RoleID == 4)
             {
                 // Solo puede agregar trabajadores para sí mismo
-                if (roleId != 3)
+                if (roleId != 2)
                 {
                     MessageBox.Show("Los proveedores solo pueden agregar trabajadores", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
