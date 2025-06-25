@@ -21,12 +21,12 @@ namespace DeliveryAppGrupo0008.Services
                 .Include(p => p.Detalles)
                     .ThenInclude(d => d.Producto)
                         .ThenInclude(prod => prod.Proveedor)
+                .Include(p => p.Delivery)  
                 .AsNoTracking()
                 .AsQueryable();
 
             if (proveedorId.HasValue)
             {
-                // Filtrar pedidos que contengan productos de ese proveedor
                 query = query.Where(p => p.Detalles.Any(d => d.Producto.ProveedorID == proveedorId.Value));
             }
 
@@ -75,6 +75,20 @@ namespace DeliveryAppGrupo0008.Services
                 return false;
             }
         }
+        public List<Pedido> GetPedidosPorCliente(int clienteId)
+        {
+            return _context.Pedidos
+                .Include(p => p.Cliente)
+                .Include(p => p.Zona)
+                .Include(p => p.Estado)
+                .Include(p => p.Detalles)
+                    .ThenInclude(d => d.Producto)
+                        .ThenInclude(prod => prod.Proveedor)
+                .Include(p => p.Delivery)
+                .Where(p => p.ClienteID == clienteId)
+                .AsNoTracking()
+                .ToList();
+        }
 
         public List<Usuario> GetUsuariosPorRole(int roleId)
         {
@@ -101,9 +115,5 @@ namespace DeliveryAppGrupo0008.Services
                 return false;
             }
         }
-
-
     }
 }
-
-
