@@ -3,6 +3,7 @@ using DeliveryAppGrupo0008.Services;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace DeliveryAppGrupo0008.Forms.pedidos
 {
@@ -19,12 +20,10 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
             _productoService = productoService;
             _zonaService = zonaService;
 
-            // Enlazar eventos
             cmbProductos.SelectedIndexChanged += (s, e) => CalcularTotal();
             cmbZonas.SelectedIndexChanged += (s, e) => CalcularTotal();
             nudCantidad.ValueChanged += (s, e) => CalcularTotal();
             btnAgregarPedido.Click += BtnAgregarPedido_Click;
-
             dgvPedidos.CellContentClick += DgvPedidos_CellContentClick;
         }
 
@@ -32,7 +31,7 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
         {
             CargarCombos();
             CargarPedidosEnGrid();
-            btnAgregarPedido.Enabled = Program.UsuarioLogueado?.RoleID == 3; // Solo clientes registran pedidos
+            btnAgregarPedido.Enabled = Program.UsuarioLogueado?.RoleID == 3; // Solo clientes pueden registrar pedidos
         }
 
         private void CargarCombos()
@@ -54,17 +53,11 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
             List<Pedido> pedidos;
 
             if (rolId == 4) // Proveedor
-            {
                 pedidos = _pedidoService.GetPedidos(usuarioId);
-            }
             else if (rolId == 3) // Cliente
-            {
                 pedidos = _pedidoService.GetPedidosPorCliente(usuarioId);
-            }
-            else // Otros roles (admin, delivery, etc.)
-            {
+            else
                 pedidos = _pedidoService.GetPedidos();
-            }
 
             var pedidosVista = pedidos.Select(p => new
             {
@@ -83,20 +76,24 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
 
             dgvPedidos.DataSource = null;
             dgvPedidos.Columns.Clear();
-
             dgvPedidos.DataSource = pedidosVista;
 
-            if (rolId == 3) // Cliente: mostrar nombre del delivery, no botón
+            // Ocultar columnas técnicas
+            dgvPedidos.Columns["PedidoID"].Visible = false;
+            dgvPedidos.Columns["EstadoID"].Visible = false;
+
+            if (rolId == 3) // Cliente: mostrar columna DeliveryNombre
             {
-                // Ya está incluido DeliveryNombre en el datasource
-                // Solo ajustar encabezado y ancho
-                dgvPedidos.Columns["DeliveryNombre"].HeaderText = "Delivery Asignado";
-                dgvPedidos.Columns["DeliveryNombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                if (dgvPedidos.Columns.Contains("DeliveryNombre"))
+                {
+                    dgvPedidos.Columns["DeliveryNombre"].HeaderText = "Delivery Asignado";
+                    dgvPedidos.Columns["DeliveryNombre"].DisplayIndex = 6; // tercera columna
+                }
             }
             else
             {
-                // Para proveedores y otros roles: agregar botón "Asignar Delivery"
-                DataGridViewButtonColumn btnAsignar = new DataGridViewButtonColumn
+                // Para proveedores/admin: agregar botón para asignar delivery
+                var btnAsignar = new DataGridViewButtonColumn
                 {
                     Name = "AsignarDelivery",
                     HeaderText = "Acción",
@@ -106,7 +103,7 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
                 };
                 dgvPedidos.Columns.Add(btnAsignar);
 
-                // Deshabilitar botón si el estado no es Pendiente (1)
+                // Deshabilitar botón si estado != pendiente (1)
                 foreach (DataGridViewRow row in dgvPedidos.Rows)
                 {
                     int estadoId = Convert.ToInt32(row.Cells["EstadoID"].Value);
@@ -115,17 +112,15 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
                 }
             }
 
-            // Ocultar columnas que no son necesarias si quieres
-            dgvPedidos.Columns["PedidoID"].Visible = false;
-            dgvPedidos.Columns["EstadoID"].Visible = false;
+            dgvPedidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvPedidos.ScrollBars = ScrollBars.Both;
         }
 
         private void DgvPedidos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             int rolId = Program.UsuarioLogueado.RoleID;
 
-            // Solo proveedores y admins pueden asignar delivery
-            if (rolId == 3) return;
+            if (rolId == 3) return; // Clientes no asignan delivery
 
             if (dgvPedidos.Columns[e.ColumnIndex].Name == "AsignarDelivery" && e.RowIndex >= 0)
             {

@@ -84,7 +84,7 @@ namespace DeliveryAppGrupo0008.Services
                 .Include(p => p.Detalles)
                     .ThenInclude(d => d.Producto)
                         .ThenInclude(prod => prod.Proveedor)
-                .Include(p => p.Delivery)
+                .Include(p => p.Delivery) 
                 .Where(p => p.ClienteID == clienteId)
                 .AsNoTracking()
                 .ToList();
