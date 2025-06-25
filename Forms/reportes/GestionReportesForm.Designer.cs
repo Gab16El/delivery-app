@@ -7,6 +7,7 @@
         private System.Windows.Forms.Button btnGenerar;
         private System.Windows.Forms.DataGridView dgvReporte;
         private System.Windows.Forms.Label lblResumen;
+        private System.Windows.Forms.Button btnGenerarPdf;
 
         protected override void Dispose(bool disposing)
         {
@@ -21,6 +22,7 @@
             this.btnGenerar = new System.Windows.Forms.Button();
             this.dgvReporte = new System.Windows.Forms.DataGridView();
             this.lblResumen = new System.Windows.Forms.Label();
+            this.btnGenerarPdf = new System.Windows.Forms.Button();  // <-- Instanciar antes de usar
 
             ((System.ComponentModel.ISupportInitialize)(this.dgvReporte)).BeginInit();
             this.SuspendLayout();
@@ -49,6 +51,17 @@
             this.btnGenerar.Click += new System.EventHandler(this.btnGenerar_Click);
 
             // 
+            // btnGenerarPdf
+            // 
+            this.btnGenerarPdf.Location = new System.Drawing.Point(340, 20);
+            this.btnGenerarPdf.Name = "btnGenerarPdf";
+            this.btnGenerarPdf.Size = new System.Drawing.Size(120, 24);
+            this.btnGenerarPdf.Text = "Generar PDF";
+            this.btnGenerarPdf.UseVisualStyleBackColor = true;
+            this.btnGenerarPdf.Visible = false;  // oculto hasta que se genere el reporte
+            this.btnGenerarPdf.Click += new System.EventHandler(this.btnGenerarPdf_Click);
+
+            // 
             // dgvReporte
             // 
             this.dgvReporte.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -71,6 +84,7 @@
             this.ClientSize = new System.Drawing.Size(700, 420);
             this.Controls.Add(this.cmbTipoReporte);
             this.Controls.Add(this.btnGenerar);
+            this.Controls.Add(this.btnGenerarPdf);
             this.Controls.Add(this.dgvReporte);
             this.Controls.Add(this.lblResumen);
             this.Name = "GestionReportesForm";

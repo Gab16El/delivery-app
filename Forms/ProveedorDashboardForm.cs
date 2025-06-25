@@ -1,14 +1,5 @@
 ﻿using DeliveryAppGrupo0008.Models;
 using DeliveryAppGrupo0008.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace DeliveryAppGrupo0008.Forms
 {
@@ -36,6 +27,7 @@ namespace DeliveryAppGrupo0008.Forms
             _productService = new ProductService(_context);
             _zonaService = new ZoneService(_context);
             _pedidoService = new PedidoService(_context);
+            _reporteService = new ReporteService(_context);
         }
 
         private void btnCerrarSesion_Click(object sender, EventArgs e)

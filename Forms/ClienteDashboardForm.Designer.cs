@@ -3,89 +3,125 @@
     partial class ClienteDashboardForm
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Label lblWelcome;
-        private System.Windows.Forms.Button btnHacerPedido;
-        private System.Windows.Forms.Button btnVerPedidos;
-        private System.Windows.Forms.Button btnCerrarSesion;
+
+        private Panel sidebar;
+        private Button btnGestionUsuarios;
+        private Button btnGestionProductos;
+        private Button btnGestionZonas;
+        private Button btnGestionPedidos;
+
+        private Button btnReportes;
+        private Button btnCerrarSesion;
+        private ImageList iconList;
+
+
+        private void ConfigurarBoton(Button btn, string texto, string iconKey)
+        {
+            btn.BackColor = Color.FromArgb(45, 45, 45);
+            btn.Dock = DockStyle.Top;
+            btn.Margin = new Padding(0, 15, 0, 15);
+            btn.FlatAppearance.BorderSize = 0;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.Font = new Font("Segoe UI", 10F);
+
+            btn.ForeColor = Color.White;
+            btn.ImageAlign = ContentAlignment.MiddleLeft;
+            btn.ImageKey = iconKey;
+            btn.ImageList = iconList;
+            btn.Text = $"   {texto}";
+            btn.TextAlign = ContentAlignment.MiddleLeft;
+            btn.UseVisualStyleBackColor = false;
+        }
+
 
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
+            {
                 components.Dispose();
+            }
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
 
+        #region
         private void InitializeComponent()
         {
-            lblWelcome = new System.Windows.Forms.Label();
-            btnHacerPedido = new System.Windows.Forms.Button();
-            btnVerPedidos = new System.Windows.Forms.Button();
-            btnCerrarSesion = new System.Windows.Forms.Button();
+            components = new System.ComponentModel.Container();
+            panelMain = new Panel();
+            sidebar = new Panel();
+            iconList = new ImageList(components);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
 
+            // Botones
+            btnGestionUsuarios = new Button();
+            btnGestionProductos = new Button();
+            btnGestionZonas = new Button();
+            btnGestionPedidos = new Button();
+            btnReportes = new Button();
+            btnCerrarSesion = new Button();
+
+
+
+            sidebar.SuspendLayout();
             SuspendLayout();
 
-            // 
             // lblWelcome
-            // 
-            lblWelcome.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            lblWelcome.Location = new System.Drawing.Point(12, 20);
-            lblWelcome.Name = "lblWelcome";
-            lblWelcome.Size = new System.Drawing.Size(760, 40);
-            lblWelcome.TabIndex = 0;
-            lblWelcome.Text = "Bienvenido Cliente";
-            lblWelcome.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            panelMain.Location = new Point(200, 20);
+            panelMain.Size = new Size(600, 400);
+            panelMain.BorderStyle = BorderStyle.FixedSingle;  // Opcional: para que se note el área
+            panelMain.BackColor = Color.WhiteSmoke;
+            panelMain.Name = "panelMain";
+            Controls.Add(panelMain);
 
-            // 
-            // btnHacerPedido
-            // 
-            btnHacerPedido.Location = new System.Drawing.Point(300, 100);
-            btnHacerPedido.Name = "btnHacerPedido";
-            btnHacerPedido.Size = new System.Drawing.Size(200, 40);
-            btnHacerPedido.TabIndex = 1;
-            btnHacerPedido.Text = "Hacer Pedido";
-            btnHacerPedido.UseVisualStyleBackColor = true;
-            // btnHacerPedido.Click += btnHacerPedido_Click;
+            // sidebar
+            sidebar.AutoScroll = true;
+            sidebar.BackColor = Color.FromArgb(30, 30, 30);
+            sidebar.Controls.Add(btnGestionUsuarios);
+            sidebar.Controls.Add(btnGestionProductos);
+            sidebar.Controls.Add(btnGestionZonas);
+            sidebar.Controls.Add(btnGestionPedidos);
+            sidebar.Controls.Add(btnReportes);
+            sidebar.Controls.Add(btnCerrarSesion);
+            sidebar.Dock = DockStyle.Left;
+            sidebar.Location = new Point(0, 0);
+            sidebar.Name = "sidebar";
+            sidebar.Size = new Size(200, 450);
+            sidebar.TabIndex = 0;
 
-            // 
-            // btnVerPedidos
-            // 
-            btnVerPedidos.Location = new System.Drawing.Point(300, 160);
-            btnVerPedidos.Name = "btnVerPedidos";
-            btnVerPedidos.Size = new System.Drawing.Size(200, 40);
-            btnVerPedidos.TabIndex = 2;
-            btnVerPedidos.Text = "Ver Mis Pedidos";
-            btnVerPedidos.UseVisualStyleBackColor = true;
-            // btnVerPedidos.Click += btnVerPedidos_Click;
-
-            // 
             // btnCerrarSesion
-            // 
-            btnCerrarSesion.Location = new System.Drawing.Point(300, 220);
+            btnCerrarSesion.BackColor = Color.FromArgb(192, 57, 43);
+            btnCerrarSesion.Dock = DockStyle.Bottom;
+            btnCerrarSesion.FlatAppearance.BorderSize = 0;
+            btnCerrarSesion.FlatStyle = FlatStyle.Flat;
+            btnCerrarSesion.Font = new Font("Segoe UI", 10F);
+            btnCerrarSesion.ForeColor = Color.White;
+            btnCerrarSesion.ImageAlign = ContentAlignment.MiddleLeft;
+            btnCerrarSesion.ImageKey = "logout";
+            btnCerrarSesion.ImageList = iconList;
+            btnCerrarSesion.Location = new Point(0, 400);
             btnCerrarSesion.Name = "btnCerrarSesion";
-            btnCerrarSesion.Size = new System.Drawing.Size(200, 40);
-            btnCerrarSesion.TabIndex = 3;
-            btnCerrarSesion.Text = "Cerrar Sesión";
-            btnCerrarSesion.UseVisualStyleBackColor = true;
+            btnCerrarSesion.Size = new Size(200, 50);
+            btnCerrarSesion.TabIndex = 2;
+            btnCerrarSesion.Text = "   Cerrar Sesión";
+            btnCerrarSesion.TextAlign = ContentAlignment.MiddleLeft;
+            btnCerrarSesion.UseVisualStyleBackColor = false;
             btnCerrarSesion.Click += btnCerrarSesion_Click;
 
-            // 
-            // ClienteDashboardForm
-            // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(800, 450);
+            // AdminDashboardForm
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.WhiteSmoke;
+            ClientSize = new Size(800, 450);
+            Controls.Add(sidebar);
             Controls.Add(lblWelcome);
-            Controls.Add(btnHacerPedido);
-            Controls.Add(btnVerPedidos);
-            Controls.Add(btnCerrarSesion);
-            Name = "ClienteDashboardForm";
-            Text = "Panel Cliente";
-            Load += ClienteDashboardForm_Load;
+            Name = "ProveedorDashboardForm";
+            Text = "Panel de Clientes";
+            Load += AdminDashboardForm_Load;
+            sidebar.ResumeLayout(false);
             ResumeLayout(false);
         }
-
         #endregion
     }
 }

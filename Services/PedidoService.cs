@@ -59,8 +59,10 @@ namespace DeliveryAppGrupo0008.Services
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                var innerMessage = ex.InnerException?.Message ?? ex.Message;
+                MessageBox.Show($"Error interno: {innerMessage}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
