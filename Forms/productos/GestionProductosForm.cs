@@ -75,7 +75,7 @@ namespace DeliveryAppGrupo0008.Forms.productos
 
             List<dynamic> productos;
 
-            if (rolId == 1) // Admin: ve todos los productos con proveedor
+            if (rolId == 1) // Admin
             {
                 productos = _productService.GetProductosConProveedor()
                     .Select(p => new
@@ -88,7 +88,7 @@ namespace DeliveryAppGrupo0008.Forms.productos
                         NombreProveedor = p.Proveedor?.Nombre ?? ""
                     }).ToList<dynamic>();
             }
-            else if (rolId == 4) // Proveedor: solo sus productos
+            else if (rolId == 4) // Proveedor
             {
                 int proveedorId = Program.UsuarioLogueado.UsuarioID;
                 productos = _productService.GetProductosConProveedor()
@@ -110,12 +110,24 @@ namespace DeliveryAppGrupo0008.Forms.productos
 
             dgvProductos.DataSource = productos;
 
-            dgvProductos.Columns["ProductoID"].HeaderText = "ID Producto";
-            dgvProductos.Columns["Nombre"].HeaderText = "Nombre";
-            dgvProductos.Columns["Descripcion"].HeaderText = "Descripción";
-            dgvProductos.Columns["Precio"].HeaderText = "Precio";
-            dgvProductos.Columns["ProveedorID"].HeaderText = "ID Proveedor";
-            dgvProductos.Columns["NombreProveedor"].HeaderText = "Proveedor";
+            // Solo modificar encabezados si hay columnas
+            if (dgvProductos.Columns["ProductoID"] != null)
+                dgvProductos.Columns["ProductoID"].HeaderText = "ID Producto";
+
+            if (dgvProductos.Columns["Nombre"] != null)
+                dgvProductos.Columns["Nombre"].HeaderText = "Nombre";
+
+            if (dgvProductos.Columns["Descripcion"] != null)
+                dgvProductos.Columns["Descripcion"].HeaderText = "Descripción";
+
+            if (dgvProductos.Columns["Precio"] != null)
+                dgvProductos.Columns["Precio"].HeaderText = "Precio";
+
+            if (dgvProductos.Columns["ProveedorID"] != null)
+                dgvProductos.Columns["ProveedorID"].HeaderText = "ID Proveedor";
+
+            if (dgvProductos.Columns["NombreProveedor"] != null)
+                dgvProductos.Columns["NombreProveedor"].HeaderText = "Proveedor";
         }
 
         private void BtnAgregarProducto_Click(object sender, EventArgs e)

@@ -8,7 +8,6 @@ namespace DeliveryAppGrupo0008.Services
     public class UserService
     {
         private readonly DeliveryContext _context;
-        private const int PROVEEDOR_ROLE_ID = 4;
 
         public UserService(DeliveryContext context)
         {
@@ -86,7 +85,7 @@ namespace DeliveryAppGrupo0008.Services
                 Nombre = nombre,
                 Email = email,
                 PasswordHash = ComputeSha256Hash(password),
-                RoleID = 3,  // trabajador
+                RoleID = 2,
                 Telefono = telefono,
                 Direccion = direccion,
                 ProveedorID = proveedorId,  
@@ -102,7 +101,7 @@ namespace DeliveryAppGrupo0008.Services
         {
             return _context.Usuarios
                 .Include(u => u.Role)
-                .Where(u => u.RoleID == 3 && u.ProveedorID == proveedorId)
+                .Where(u => u.RoleID == 2 && u.ProveedorID == proveedorId)
                 .AsNoTracking()
                 .ToList();
         }

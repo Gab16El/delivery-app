@@ -66,5 +66,35 @@ namespace DeliveryAppGrupo0008.Services
                 return false;
             }
         }
+
+        public List<Usuario> GetUsuariosPorRole(int roleId)
+        {
+            return _context.Usuarios.Where(u => u.RoleID == roleId).AsNoTracking().ToList();
+        }
+
+        public bool AsignarDeliveryYPasarEstado(int pedidoId, int deliveryId)
+        {
+            try
+            {
+                var pedido = _context.Pedidos.FirstOrDefault(p => p.PedidoID == pedidoId);
+                if (pedido == null) return false;
+
+                // Asignar delivery y cambiar estado
+                pedido.DeliveryID = deliveryId; 
+                pedido.EstadoID = 2; // En Proceso
+
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error interno: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+
     }
 }
+
+

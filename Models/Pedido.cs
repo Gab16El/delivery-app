@@ -9,6 +9,9 @@ public class Pedido
     public int PedidoID { get; set; }
     public int ClienteID { get; set; }
     public Usuario Cliente { get; set; }
+    public int? DeliveryID { get; set; }
+    public Usuario Delivery { get; set; }
+
     public int ZonaID { get; set; }
     public Zona Zona { get; set; }
     public int EstadoID { get; set; }
