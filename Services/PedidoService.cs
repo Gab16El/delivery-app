@@ -12,9 +12,9 @@ namespace DeliveryAppGrupo0008.Services
             _context = context;
         }
 
-        public List<Pedido> GetPedidos()
+        public List<Pedido> GetPedidos(int? proveedorId = null)
         {
-            return _context.Pedidos
+            var query = _context.Pedidos
                 .Include(p => p.Cliente)
                 .Include(p => p.Zona)
                 .Include(p => p.Estado)
@@ -22,8 +22,17 @@ namespace DeliveryAppGrupo0008.Services
                     .ThenInclude(d => d.Producto)
                         .ThenInclude(prod => prod.Proveedor)
                 .AsNoTracking()
-                .ToList();
+                .AsQueryable();
+
+            if (proveedorId.HasValue)
+            {
+                // Filtrar pedidos que contengan productos de ese proveedor
+                query = query.Where(p => p.Detalles.Any(d => d.Producto.ProveedorID == proveedorId.Value));
+            }
+
+            return query.ToList();
         }
+
 
         public bool RegistrarPedido(int clienteId, int productoId, int zonaId, int cantidad)
         {

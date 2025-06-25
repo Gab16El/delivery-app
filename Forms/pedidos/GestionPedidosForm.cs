@@ -111,22 +111,35 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
 
         private void CargarPedidosEnGrid()
         {
-            var pedidos = _pedidoService.GetPedidos()
-                .Select(p => new
-                {
-                    p.PedidoID,
-                    Cliente = p.Cliente?.Nombre,
-                    Productos = string.Join(", ", p.Detalles.Select(d => d.Producto?.Nombre)),
-                    Proveedores = string.Join(", ", p.Detalles.Select(d => d.Producto?.Proveedor?.Nombre).Distinct()),
-                    Zona = p.Zona?.Nombre,
-                    EstadoID = p.EstadoID,
-                    Estado = p.Estado?.Estado,
-                    p.FechaPedido,
-                    FechaEntrega = p.FechaEntrega?.ToString("dd/MM/yyyy") ?? "Pendiente",
-                    Total = p.Total.ToString("C")
-                }).ToList();
+            int rolId = Program.UsuarioLogueado.RoleID;
+            int proveedorId = Program.UsuarioLogueado.UsuarioID;
 
-            dgvPedidos.DataSource = pedidos;
+            List<Pedido> pedidos;
+
+            if (rolId == 4) // Si es proveedor, filtrar solo sus pedidos
+            {
+                pedidos = _pedidoService.GetPedidos(proveedorId);
+            }
+            else
+            {
+                pedidos = _pedidoService.GetPedidos();
+            }
+
+            var pedidosVista = pedidos.Select(p => new
+            {
+                p.PedidoID,
+                Cliente = p.Cliente?.Nombre,
+                Productos = string.Join(", ", p.Detalles.Select(d => d.Producto?.Nombre)),
+                Proveedores = string.Join(", ", p.Detalles.Select(d => d.Producto?.Proveedor?.Nombre).Distinct()),
+                Zona = p.Zona?.Nombre,
+                EstadoID = p.EstadoID,
+                Estado = p.Estado?.Estado,
+                p.FechaPedido,
+                FechaEntrega = p.FechaEntrega?.ToString("dd/MM/yyyy") ?? "Pendiente",
+                Total = p.Total.ToString("C")
+            }).ToList();
+
+            dgvPedidos.DataSource = pedidosVista;
 
             // Crear columna de botón "Asignar Delivery" si no existe
             if (!dgvPedidos.Columns.Contains("AsignarDelivery"))
