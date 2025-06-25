@@ -28,6 +28,7 @@ namespace DeliveryAppGrupo0008.Forms
                 return;
             }
 
+            Program.UsuarioLogueado = user;
             // Redireccionar según el rol
             Form dashboardForm;
 

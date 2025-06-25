@@ -1,9 +1,4 @@
-﻿using DeliveryAppGrupo0008.Models;
-using DeliveryAppGrupo0008.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
+﻿using DeliveryAppGrupo0008.Services;
 
 namespace DeliveryAppGrupo0008.Forms.zonas
 {

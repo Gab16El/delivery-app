@@ -1,15 +1,14 @@
-using System;
-using System.Windows.Forms;
+using DeliveryAppGrupo0008.Models;
+using DeliveryAppGrupo0008.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using DeliveryAppGrupo0008.Services;
-using System.IO;
 
 namespace DeliveryAppGrupo0008
 {
     internal static class Program
     {
         public static DeliveryContext DbContext;
+        public static Usuario UsuarioLogueado { get; set; } 
 
         [STAThread]
         static void Main()

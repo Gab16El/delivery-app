@@ -1,4 +1,5 @@
-﻿using DeliveryAppGrupo0008.Models;
+﻿using DeliveryAppGrupo0008.Forms.zonas;
+using DeliveryAppGrupo0008.Models;
 using DeliveryAppGrupo0008.Services;
 using Microsoft.EntityFrameworkCore.Internal;
 
@@ -13,6 +14,7 @@ namespace DeliveryAppGrupo0008.Forms
         private DeliveryContext _context;
         private UserService _userService;
         private ZoneService _zonaService;
+        private PedidoService _pedidoService;
         private ProductService _productService;
 
         public AdminDashboardForm(Usuario usuario)
@@ -25,6 +27,7 @@ namespace DeliveryAppGrupo0008.Forms
             _userService = new UserService(_context);
             _productService = new ProductService(_context);
             _zonaService = new ZoneService(_context);
+            _pedidoService = new PedidoService(_context);
 
         }
 
@@ -76,6 +79,13 @@ namespace DeliveryAppGrupo0008.Forms
             {
                 var gestionZonasForm = new DeliveryAppGrupo0008.Forms.zonas.GestionZonasForm(_zonaService);
                 CargarModuloEnPanel(gestionZonasForm);
+            };
+
+            btnGestionPedidos.Click += (s, e) =>
+            {
+                var gestionPedidosForm = new DeliveryAppGrupo0008.Forms.pedidos.GestionPedidosForm(_pedidoService, _productService, _zonaService);
+                CargarModuloEnPanel(gestionPedidosForm);
+
             };
         }
 
