@@ -57,7 +57,6 @@ namespace DeliveryAppGrupo0008.Services
             return true;
         }
 
-
         public bool IsAdmin(Usuario user)
         {
             return user?.Role?.RoleName == "Admin";
@@ -71,6 +70,10 @@ namespace DeliveryAppGrupo0008.Services
         public bool IsCliente(Usuario user)
         {
             return user?.Role?.RoleName == "Cliente";
+        }
+
+        public bool isProveedor(Usuario user) {
+            return user?.Role?.RoleName == "Proveedor";
         }
 
         private string ComputeSha256Hash(string rawData)

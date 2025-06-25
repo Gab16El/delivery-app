@@ -26,7 +26,7 @@ namespace DeliveryAppGrupo0008.Services
 
         public List<Usuario> GetProveedores()
         {
-            int proveedorRoleId = 4; 
+            int proveedorRoleId = 4;
             return _context.Usuarios
                 .Where(u => u.RoleID == proveedorRoleId)
                 .AsNoTracking()
@@ -40,7 +40,6 @@ namespace DeliveryAppGrupo0008.Services
 
             if (_context.Usuarios.Any(u => u.Email.ToLower() == email))
             {
-                // Ya existe usuario con ese email
                 return false;
             }
 
@@ -71,6 +70,41 @@ namespace DeliveryAppGrupo0008.Services
                     builder.Append(b.ToString("x2"));
                 return builder.ToString();
             }
+        }
+
+
+        // asignar proveedor a trabajador
+        public bool RegistrarTrabajador(string nombre, string email, string password, string telefono, string direccion, int proveedorId)
+        {
+            email = email.Trim().ToLower();
+
+            if (_context.Usuarios.Any(u => u.Email.ToLower() == email))
+                return false;
+
+            var trabajador = new Usuario
+            {
+                Nombre = nombre,
+                Email = email,
+                PasswordHash = ComputeSha256Hash(password),
+                RoleID = 3,  // trabajador
+                Telefono = telefono,
+                Direccion = direccion,
+                ProveedorID = proveedorId,  
+                FechaRegistro = DateTime.Now
+            };
+
+            _context.Usuarios.Add(trabajador);
+            _context.SaveChanges();
+            return true;
+        }
+
+        public List<Usuario> GetTrabajadoresDeProveedor(int proveedorId)
+        {
+            return _context.Usuarios
+                .Include(u => u.Role)
+                .Where(u => u.RoleID == 3 && u.ProveedorID == proveedorId)
+                .AsNoTracking()
+                .ToList();
         }
     }
 }

@@ -4,14 +4,17 @@
     {
         private System.ComponentModel.IContainer components = null;
 
-        private System.Windows.Forms.ComboBox cmbRol;
-        private System.Windows.Forms.ComboBox cmbFiltroRol;
-
         private System.Windows.Forms.TabControl tabControlUsuarios;
         private System.Windows.Forms.TabPage tabPageLista;
         private System.Windows.Forms.TabPage tabPageAgregar;
 
+        private System.Windows.Forms.Panel panelUsuarios;
+        private System.Windows.Forms.Panel panelFiltro;
+
         private System.Windows.Forms.DataGridView dgvUsuarios;
+
+        private System.Windows.Forms.ComboBox cmbFiltroRol;
+        private System.Windows.Forms.ComboBox cmbRol;
 
         private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.Label lblEmail;
@@ -41,271 +44,265 @@
 
         private void InitializeComponent()
         {
-            this.cmbRol = new System.Windows.Forms.ComboBox();
-            this.cmbFiltroRol = new System.Windows.Forms.ComboBox();
-
-            this.tabControlUsuarios = new System.Windows.Forms.TabControl();
-            this.tabPageLista = new System.Windows.Forms.TabPage();
-            this.dgvUsuarios = new System.Windows.Forms.DataGridView();
-            this.tabPageAgregar = new System.Windows.Forms.TabPage();
-
-            this.lblNombre = new System.Windows.Forms.Label();
-            this.txtNombre = new System.Windows.Forms.TextBox();
-
-            this.lblEmail = new System.Windows.Forms.Label();
-            this.txtEmail = new System.Windows.Forms.TextBox();
-
-            this.lblPassword = new System.Windows.Forms.Label();
-            this.txtPassword = new System.Windows.Forms.TextBox();
-
-            this.lblRole = new System.Windows.Forms.Label();
-
-            this.lblTelefono = new System.Windows.Forms.Label();
-            this.txtTelefono = new System.Windows.Forms.TextBox();
-
-            this.lblDireccion = new System.Windows.Forms.Label();
-            this.txtDireccion = new System.Windows.Forms.TextBox();
-
-            this.lblConfirmPassword = new System.Windows.Forms.Label();
-            this.txtConfirmPassword = new System.Windows.Forms.TextBox();
-
-            this.btnAgregarUsuario = new System.Windows.Forms.Button();
-
-            this.tabControlUsuarios.SuspendLayout();
-            this.tabPageLista.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvUsuarios)).BeginInit();
-            this.tabPageAgregar.SuspendLayout();
-            this.SuspendLayout();
-
+            tabControlUsuarios = new TabControl();
+            tabPageLista = new TabPage();
+            panelFiltro = new Panel();
+            cmbFiltroRol = new ComboBox();
+            panelUsuarios = new Panel();
+            dgvUsuarios = new DataGridView();
+            tabPageAgregar = new TabPage();
+            lblNombre = new Label();
+            txtNombre = new TextBox();
+            lblEmail = new Label();
+            txtEmail = new TextBox();
+            lblPassword = new Label();
+            txtPassword = new TextBox();
+            lblConfirmPassword = new Label();
+            txtConfirmPassword = new TextBox();
+            lblRole = new Label();
+            cmbRol = new ComboBox();
+            lblTelefono = new Label();
+            txtTelefono = new TextBox();
+            lblDireccion = new Label();
+            txtDireccion = new TextBox();
+            btnAgregarUsuario = new Button();
+            tabControlUsuarios.SuspendLayout();
+            tabPageLista.SuspendLayout();
+            panelFiltro.SuspendLayout();
+            panelUsuarios.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvUsuarios).BeginInit();
+            tabPageAgregar.SuspendLayout();
+            SuspendLayout();
             // 
             // tabControlUsuarios
             // 
-            this.tabControlUsuarios.Controls.Add(this.tabPageLista);
-            this.tabControlUsuarios.Controls.Add(this.tabPageAgregar);
-            this.tabControlUsuarios.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlUsuarios.Location = new System.Drawing.Point(0, 0);
-            this.tabControlUsuarios.Name = "tabControlUsuarios";
-            this.tabControlUsuarios.SelectedIndex = 0;
-            this.tabControlUsuarios.Size = new System.Drawing.Size(800, 450);
-            this.tabControlUsuarios.TabIndex = 0;
-
+            tabControlUsuarios.Controls.Add(tabPageLista);
+            tabControlUsuarios.Controls.Add(tabPageAgregar);
+            tabControlUsuarios.Dock = DockStyle.Fill;
+            tabControlUsuarios.Location = new Point(0, 0);
+            tabControlUsuarios.Name = "tabControlUsuarios";
+            tabControlUsuarios.SelectedIndex = 0;
+            tabControlUsuarios.Size = new Size(800, 450);
+            tabControlUsuarios.TabIndex = 0;
             // 
             // tabPageLista
             // 
-            this.tabPageLista.Controls.Add(this.cmbFiltroRol);
-            this.tabPageLista.Controls.Add(this.dgvUsuarios);
-            this.tabPageLista.Location = new System.Drawing.Point(4, 24);
-            this.tabPageLista.Name = "tabPageLista";
-            this.tabPageLista.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageLista.Size = new System.Drawing.Size(792, 422);
-            this.tabPageLista.TabIndex = 0;
-            this.tabPageLista.Text = "Lista de Usuarios";
-            this.tabPageLista.UseVisualStyleBackColor = true;
-
+            tabPageLista.Controls.Add(panelUsuarios);
+            tabPageLista.Controls.Add(panelFiltro);
+            tabPageLista.Location = new Point(4, 24);
+            tabPageLista.Name = "tabPageLista";
+            tabPageLista.Padding = new Padding(3);
+            tabPageLista.Size = new Size(792, 422);
+            tabPageLista.TabIndex = 0;
+            tabPageLista.Text = "Lista de Usuarios";
+            tabPageLista.UseVisualStyleBackColor = true;
+            // 
+            // panelFiltro
+            // 
+            panelFiltro.Controls.Add(cmbFiltroRol);
+            panelFiltro.Dock = DockStyle.Top;
+            panelFiltro.Location = new Point(3, 3);
+            panelFiltro.Name = "panelFiltro";
+            panelFiltro.Padding = new Padding(10);
+            panelFiltro.Size = new Size(786, 40);
+            panelFiltro.TabIndex = 0;
             // 
             // cmbFiltroRol
             // 
-            this.cmbFiltroRol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbFiltroRol.Location = new System.Drawing.Point(10, 10);
-            this.cmbFiltroRol.Name = "cmbFiltroRol";
-            this.cmbFiltroRol.Size = new System.Drawing.Size(200, 23);
-            this.cmbFiltroRol.TabIndex = 1;
-            this.cmbFiltroRol.SelectedIndexChanged += new System.EventHandler(this.CmbFiltroRol_SelectedIndexChanged);
-
+            cmbFiltroRol.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbFiltroRol.Location = new Point(10, 10);
+            cmbFiltroRol.Name = "cmbFiltroRol";
+            cmbFiltroRol.Size = new Size(200, 23);
+            cmbFiltroRol.TabIndex = 0;
+            cmbFiltroRol.SelectedIndexChanged += CmbFiltroRol_SelectedIndexChanged;
+            // 
+            // panelUsuarios
+            // 
+            panelUsuarios.BorderStyle = BorderStyle.FixedSingle;
+            panelUsuarios.Controls.Add(dgvUsuarios);
+            panelUsuarios.Dock = DockStyle.Fill;
+            panelUsuarios.Location = new Point(3, 3);
+            panelUsuarios.Margin = new Padding(20);
+            panelUsuarios.Name = "panelUsuarios";
+            panelUsuarios.Size = new Size(786, 416);
+            panelUsuarios.TabIndex = 1;
             // 
             // dgvUsuarios
             // 
-            this.dgvUsuarios.Location = new System.Drawing.Point(10, 40);
-            this.dgvUsuarios.Name = "dgvUsuarios";
-            this.dgvUsuarios.Size = new System.Drawing.Size(770, 370);
-            this.dgvUsuarios.TabIndex = 0;
-            this.dgvUsuarios.ReadOnly = true;
-            this.dgvUsuarios.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvUsuarios.MultiSelect = false;
-            this.dgvUsuarios.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-
+            dgvUsuarios.Dock = DockStyle.Fill;
+            dgvUsuarios.Location = new Point(0, 0);
+            dgvUsuarios.MultiSelect = false;
+            dgvUsuarios.Name = "dgvUsuarios";
+            dgvUsuarios.ReadOnly = true;
+            dgvUsuarios.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvUsuarios.Size = new Size(784, 414);
+            dgvUsuarios.TabIndex = 0;
             // 
             // tabPageAgregar
             // 
-            this.tabPageAgregar.Controls.Add(this.lblNombre);
-            this.tabPageAgregar.Controls.Add(this.txtNombre);
-            this.tabPageAgregar.Controls.Add(this.lblEmail);
-            this.tabPageAgregar.Controls.Add(this.txtEmail);
-            this.tabPageAgregar.Controls.Add(this.lblPassword);
-            this.tabPageAgregar.Controls.Add(this.txtPassword);
-            this.tabPageAgregar.Controls.Add(this.lblRole);
-            this.tabPageAgregar.Controls.Add(this.cmbRol);
-            this.tabPageAgregar.Controls.Add(this.lblTelefono);
-            this.tabPageAgregar.Controls.Add(this.txtTelefono);
-            this.tabPageAgregar.Controls.Add(this.lblDireccion);
-            this.tabPageAgregar.Controls.Add(this.txtDireccion);
-            this.tabPageAgregar.Controls.Add(this.lblConfirmPassword);
-            this.tabPageAgregar.Controls.Add(this.txtConfirmPassword);
-            this.tabPageAgregar.Controls.Add(this.btnAgregarUsuario);
-            this.tabPageAgregar.Location = new System.Drawing.Point(4, 24);
-            this.tabPageAgregar.Name = "tabPageAgregar";
-            this.tabPageAgregar.Padding = new System.Windows.Forms.Padding(10);
-            this.tabPageAgregar.Size = new System.Drawing.Size(792, 422);
-            this.tabPageAgregar.TabIndex = 1;
-            this.tabPageAgregar.Text = "Agregar Usuario";
-            this.tabPageAgregar.UseVisualStyleBackColor = true;
-
+            tabPageAgregar.Controls.Add(lblNombre);
+            tabPageAgregar.Controls.Add(txtNombre);
+            tabPageAgregar.Controls.Add(lblEmail);
+            tabPageAgregar.Controls.Add(txtEmail);
+            tabPageAgregar.Controls.Add(lblPassword);
+            tabPageAgregar.Controls.Add(txtPassword);
+            tabPageAgregar.Controls.Add(lblConfirmPassword);
+            tabPageAgregar.Controls.Add(txtConfirmPassword);
+            tabPageAgregar.Controls.Add(lblRole);
+            tabPageAgregar.Controls.Add(cmbRol);
+            tabPageAgregar.Controls.Add(lblTelefono);
+            tabPageAgregar.Controls.Add(txtTelefono);
+            tabPageAgregar.Controls.Add(lblDireccion);
+            tabPageAgregar.Controls.Add(txtDireccion);
+            tabPageAgregar.Controls.Add(btnAgregarUsuario);
+            tabPageAgregar.Location = new Point(4, 24);
+            tabPageAgregar.Name = "tabPageAgregar";
+            tabPageAgregar.Padding = new Padding(10);
+            tabPageAgregar.Size = new Size(792, 422);
+            tabPageAgregar.TabIndex = 1;
+            tabPageAgregar.Text = "Agregar Usuario";
+            tabPageAgregar.UseVisualStyleBackColor = true;
             // 
             // lblNombre
             // 
-            this.lblNombre.AutoSize = true;
-            this.lblNombre.Location = new System.Drawing.Point(30, 30);
-            this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(54, 15);
-            this.lblNombre.TabIndex = 0;
-            this.lblNombre.Text = "Nombre:";
-
+            lblNombre.AutoSize = true;
+            lblNombre.Location = new Point(40, 40);
+            lblNombre.Name = "lblNombre";
+            lblNombre.Size = new Size(54, 15);
+            lblNombre.TabIndex = 0;
+            lblNombre.Text = "Nombre:";
             // 
             // txtNombre
             // 
-            this.txtNombre.Location = new System.Drawing.Point(161, 22);
-            this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(200, 23);
-            this.txtNombre.TabIndex = 1;
-
+            txtNombre.Location = new Point(161, 22);
+            txtNombre.Name = "txtNombre";
+            txtNombre.Size = new Size(200, 23);
+            txtNombre.TabIndex = 1;
             // 
             // lblEmail
             // 
-            this.lblEmail.AutoSize = true;
-            this.lblEmail.Location = new System.Drawing.Point(30, 70);
-            this.lblEmail.Name = "lblEmail";
-            this.lblEmail.Size = new System.Drawing.Size(39, 15);
-            this.lblEmail.TabIndex = 2;
-            this.lblEmail.Text = "Email:";
-
+            lblEmail.AutoSize = true;
+            lblEmail.Location = new Point(40, 80);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(39, 15);
+            lblEmail.TabIndex = 2;
+            lblEmail.Text = "Email:";
             // 
             // txtEmail
             // 
-            this.txtEmail.Location = new System.Drawing.Point(161, 62);
-            this.txtEmail.Name = "txtEmail";
-            this.txtEmail.Size = new System.Drawing.Size(200, 23);
-            this.txtEmail.TabIndex = 3;
-
+            txtEmail.Location = new Point(161, 62);
+            txtEmail.Name = "txtEmail";
+            txtEmail.Size = new Size(200, 23);
+            txtEmail.TabIndex = 3;
             // 
             // lblPassword
             // 
-            this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(30, 153);
-            this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(70, 15);
-            this.lblPassword.TabIndex = 4;
-            this.lblPassword.Text = "Contraseña:";
-
+            lblPassword.AutoSize = true;
+            lblPassword.Location = new Point(40, 163);
+            lblPassword.Name = "lblPassword";
+            lblPassword.Size = new Size(70, 15);
+            lblPassword.TabIndex = 4;
+            lblPassword.Text = "Contraseña:";
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(161, 145);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(200, 23);
-            this.txtPassword.TabIndex = 5;
-
-            // 
-            // lblRole
-            // 
-            this.lblRole.AutoSize = true;
-            this.lblRole.Location = new System.Drawing.Point(30, 115);
-            this.lblRole.Name = "lblRole";
-            this.lblRole.Size = new System.Drawing.Size(27, 15);
-            this.lblRole.TabIndex = 6;
-            this.lblRole.Text = "Rol:";
-
-            // 
-            // cmbRol
-            // 
-            this.cmbRol.Location = new System.Drawing.Point(161, 107);
-            this.cmbRol.Name = "cmbRol";
-            this.cmbRol.Size = new System.Drawing.Size(200, 23);
-            this.cmbRol.TabIndex = 7;
-
-            // 
-            // lblTelefono
-            // 
-            this.lblTelefono.AutoSize = true;
-            this.lblTelefono.Location = new System.Drawing.Point(30, 190);
-            this.lblTelefono.Name = "lblTelefono";
-            this.lblTelefono.Size = new System.Drawing.Size(60, 15);
-            this.lblTelefono.TabIndex = 8;
-            this.lblTelefono.Text = "Teléfono:";
-
-            // 
-            // txtTelefono
-            // 
-            this.txtTelefono.Location = new System.Drawing.Point(161, 182);
-            this.txtTelefono.Name = "txtTelefono";
-            this.txtTelefono.Size = new System.Drawing.Size(200, 23);
-            this.txtTelefono.TabIndex = 9;
-
-            // 
-            // lblDireccion
-            // 
-            this.lblDireccion.AutoSize = true;
-            this.lblDireccion.Location = new System.Drawing.Point(30, 230);
-            this.lblDireccion.Name = "lblDireccion";
-            this.lblDireccion.Size = new System.Drawing.Size(60, 15);
-            this.lblDireccion.TabIndex = 10;
-            this.lblDireccion.Text = "Dirección:";
-
-            // 
-            // txtDireccion
-            // 
-            this.txtDireccion.Location = new System.Drawing.Point(161, 222);
-            this.txtDireccion.Name = "txtDireccion";
-            this.txtDireccion.Size = new System.Drawing.Size(200, 23);
-            this.txtDireccion.TabIndex = 11;
-
+            txtPassword.Location = new Point(161, 145);
+            txtPassword.Name = "txtPassword";
+            txtPassword.PasswordChar = '*';
+            txtPassword.Size = new Size(200, 23);
+            txtPassword.TabIndex = 5;
             // 
             // lblConfirmPassword
             // 
-            this.lblConfirmPassword.AutoSize = true;
-            this.lblConfirmPassword.Location = new System.Drawing.Point(30, 270);
-            this.lblConfirmPassword.Name = "lblConfirmPassword";
-            this.lblConfirmPassword.Size = new System.Drawing.Size(125, 15);
-            this.lblConfirmPassword.TabIndex = 12;
-            this.lblConfirmPassword.Text = "Confirmar contraseña:";
-
+            lblConfirmPassword.AutoSize = true;
+            lblConfirmPassword.Location = new Point(40, 280);
+            lblConfirmPassword.Name = "lblConfirmPassword";
+            lblConfirmPassword.Size = new Size(125, 15);
+            lblConfirmPassword.TabIndex = 6;
+            lblConfirmPassword.Text = "Confirmar contraseña:";
             // 
             // txtConfirmPassword
             // 
-            this.txtConfirmPassword.Location = new System.Drawing.Point(161, 262);
-            this.txtConfirmPassword.Name = "txtConfirmPassword";
-            this.txtConfirmPassword.PasswordChar = '*';
-            this.txtConfirmPassword.Size = new System.Drawing.Size(200, 23);
-            this.txtConfirmPassword.TabIndex = 13;
-
+            txtConfirmPassword.Location = new Point(161, 262);
+            txtConfirmPassword.Name = "txtConfirmPassword";
+            txtConfirmPassword.PasswordChar = '*';
+            txtConfirmPassword.Size = new Size(200, 23);
+            txtConfirmPassword.TabIndex = 7;
+            // 
+            // lblRole
+            // 
+            lblRole.AutoSize = true;
+            lblRole.Location = new Point(40, 125);
+            lblRole.Name = "lblRole";
+            lblRole.Size = new Size(27, 15);
+            lblRole.TabIndex = 8;
+            lblRole.Text = "Rol:";
+            // 
+            // cmbRol
+            // 
+            cmbRol.Location = new Point(161, 107);
+            cmbRol.Name = "cmbRol";
+            cmbRol.Size = new Size(200, 23);
+            cmbRol.TabIndex = 9;
+            // 
+            // lblTelefono
+            // 
+            lblTelefono.AutoSize = true;
+            lblTelefono.Location = new Point(40, 200);
+            lblTelefono.Name = "lblTelefono";
+            lblTelefono.Size = new Size(56, 15);
+            lblTelefono.TabIndex = 10;
+            lblTelefono.Text = "Teléfono:";
+            // 
+            // txtTelefono
+            // 
+            txtTelefono.Location = new Point(161, 182);
+            txtTelefono.Name = "txtTelefono";
+            txtTelefono.Size = new Size(200, 23);
+            txtTelefono.TabIndex = 11;
+            // 
+            // lblDireccion
+            // 
+            lblDireccion.AutoSize = true;
+            lblDireccion.Location = new Point(40, 240);
+            lblDireccion.Name = "lblDireccion";
+            lblDireccion.Size = new Size(60, 15);
+            lblDireccion.TabIndex = 12;
+            lblDireccion.Text = "Dirección:";
+            // 
+            // txtDireccion
+            // 
+            txtDireccion.Location = new Point(161, 222);
+            txtDireccion.Name = "txtDireccion";
+            txtDireccion.Size = new Size(200, 23);
+            txtDireccion.TabIndex = 13;
             // 
             // btnAgregarUsuario
             // 
-            this.btnAgregarUsuario.Location = new System.Drawing.Point(98, 310);
-            this.btnAgregarUsuario.Name = "btnAgregarUsuario";
-            this.btnAgregarUsuario.Size = new System.Drawing.Size(157, 30);
-            this.btnAgregarUsuario.TabIndex = 14;
-            this.btnAgregarUsuario.Text = "Agregar Usuario";
-            this.btnAgregarUsuario.UseVisualStyleBackColor = true;
-            this.btnAgregarUsuario.Click += new System.EventHandler(this.BtnAgregarUsuario_Click);
-
+            btnAgregarUsuario.Location = new Point(98, 310);
+            btnAgregarUsuario.Name = "btnAgregarUsuario";
+            btnAgregarUsuario.Size = new Size(157, 30);
+            btnAgregarUsuario.TabIndex = 14;
+            btnAgregarUsuario.Text = "Agregar Usuario";
+            btnAgregarUsuario.Click += BtnAgregarUsuario_Click;
             // 
             // GestionUsuariosForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.tabControlUsuarios);
-            this.Name = "GestionUsuariosForm";
-            this.Text = "Gestión de Usuarios";
-            this.Load += new System.EventHandler(this.GestionUsuariosForm_Load);
-
-            this.tabControlUsuarios.ResumeLayout(false);
-            this.tabPageLista.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvUsuarios)).EndInit();
-            this.tabPageAgregar.ResumeLayout(false);
-            this.tabPageAgregar.PerformLayout();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(tabControlUsuarios);
+            Name = "GestionUsuariosForm";
+            Text = "Gestión de Usuarios";
+            Load += GestionUsuariosForm_Load;
+            tabControlUsuarios.ResumeLayout(false);
+            tabPageLista.ResumeLayout(false);
+            panelFiltro.ResumeLayout(false);
+            panelUsuarios.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvUsuarios).EndInit();
+            tabPageAgregar.ResumeLayout(false);
+            tabPageAgregar.PerformLayout();
+            ResumeLayout(false);
         }
     }
 }

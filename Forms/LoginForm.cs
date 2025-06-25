@@ -44,6 +44,10 @@ namespace DeliveryAppGrupo0008.Forms
             {
                 dashboardForm = new ClienteDashboardForm(user);
             }
+            else if (_authService.isProveedor(user)) 
+            {
+                dashboardForm = new ProveedorDashboardForm(user);
+            }
             else
             {
                 MessageBox.Show("Rol desconocido.");
