@@ -43,21 +43,21 @@
 
             private void CargarPedidosEnGrid()
             {
-                var pedidos = _pedidoService.GetPedidos()
-                    .Select(p => new
-                    {
-                        p.PedidoID,
-                        Cliente = p.Cliente?.Nombre,
-                        Producto = p.Producto?.Nombre,
-                        Proveedor = p.Producto?.Proveedor?.Nombre,
-                        Zona = p.Zona?.Nombre,
-                        Estado = p.Estado?.Estado,
-                        p.FechaPedido,
-                        FechaEntrega = p.FechaEntrega?.ToString("dd/MM/yyyy") ?? "Pendiente",
-                        Total = p.Total.ToString("C")
-                    }).ToList();
+            var pedidos = _pedidoService.GetPedidos()
+                .Select(p => new
+                {
+                    p.PedidoID,
+                    Cliente = p.Cliente?.Nombre,
+                    Productos = string.Join(", ", p.Detalles.Select(d => d.Producto?.Nombre)),
+                    Proveedores = string.Join(", ", p.Detalles.Select(d => d.Producto?.Proveedor?.Nombre).Distinct()),
+                    Zona = p.Zona?.Nombre,
+                    Estado = p.Estado?.Estado,
+                    p.FechaPedido,
+                    FechaEntrega = p.FechaEntrega?.ToString("dd/MM/yyyy") ?? "Pendiente",
+                    Total = p.Total.ToString("C")
+                }).ToList();
 
-                dgvPedidos.DataSource = pedidos;
+            dgvPedidos.DataSource = pedidos;
             }
 
         private void CalcularTotal()

@@ -1,7 +1,11 @@
 ﻿using DeliveryAppGrupo0008.Models;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class Pedido
 {
+    [Key]
+    [Column("PedidoID")]
     public int PedidoID { get; set; }
     public int ClienteID { get; set; }
     public Usuario Cliente { get; set; }
