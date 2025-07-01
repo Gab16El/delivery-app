@@ -131,6 +131,22 @@ namespace DeliveryAppGrupo0008.Services
                 .ToList();
         }
 
+        public List<Usuario> GetDeliverysParaProveedor(int proveedorId)
+        {
+            // Buscar pedidos con productos del proveedor y con delivery asignado
+            var deliveryIds = _context.Pedidos
+                .Include(p => p.Detalles)
+                    .ThenInclude(d => d.Producto)
+                .Where(p => p.Detalles.Any(d => d.Producto.ProveedorID == proveedorId) && p.DeliveryID != null)
+                .Select(p => p.DeliveryID.Value)
+                .Distinct()
+                .ToList();
+
+            return _context.Usuarios
+                .Where(u => u.RoleID == 2 && deliveryIds.Contains(u.UsuarioID))
+                .ToList();
+        }
+
         public bool CambiarEstadoPedido(int pedidoId, int nuevoEstadoId, DateTime? fechaEntrega = null)
         {
             try

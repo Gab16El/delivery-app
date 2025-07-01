@@ -82,7 +82,7 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
             dgvPedidos.Columns["EstadoID"].Visible = false;
 
             // Agregar botones según rol
-            if (rolId == 1) // Admin: botón para asignar delivery
+            if (rolId == 1 || rolId == 4) // Admin: botón para asignar delivery
             {
                 var btnAsignar = new DataGridViewButtonColumn
                 {
@@ -155,6 +155,17 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
             int rolId = Program.UsuarioLogueado.RoleID;
             if (e.RowIndex < 0) return;
 
+            if (rolId == 1 || rolId == 4) // Admin o Proveedor
+            {
+                var columnName = dgvPedidos.Columns[e.ColumnIndex].Name;
+
+                if (columnName == "AsignarDelivery")
+                {
+                    int pedidoId = Convert.ToInt32(dgvPedidos.Rows[e.RowIndex].Cells["PedidoID"].Value);
+                    AsignarDelivery(pedidoId);
+                }
+            }
+
             if (rolId == 2) // Delivery - aceptar o cancelar
             {
                 var columnName = dgvPedidos.Columns[e.ColumnIndex].Name;
@@ -192,7 +203,15 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
 
         private void AsignarDelivery(int pedidoId)
         {
-            var deliveries = _pedidoService.GetUsuariosPorRole(2); // RoleID 2 = Deliverys
+            // 👇 ESTA ES LA PARTE QUE VOS TENÉS QUE AGREGAR
+            int rolId = Program.UsuarioLogueado.RoleID;
+            int usuarioId = Program.UsuarioLogueado.UsuarioID;
+
+            List<Usuario> deliveries;
+            if (rolId == 4) // Proveedor
+                deliveries = _pedidoService.GetDeliverysParaProveedor(usuarioId);
+            else
+                deliveries = _pedidoService.GetUsuariosPorRole(2);
 
             if (deliveries == null || deliveries.Count == 0)
             {
@@ -240,6 +259,7 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
                 }
             }
         }
+
 
         private void CalcularTotal()
         {
