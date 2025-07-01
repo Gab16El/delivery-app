@@ -76,13 +76,22 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
             dgvPedidos.DataSource = null;
             dgvPedidos.Columns.Clear();
             dgvPedidos.DataSource = pedidosVista;
+            dgvPedidos.CellPainting += dgvPedidos_CellPainting;
 
             // Ocultar columnas técnicas
             dgvPedidos.Columns["PedidoID"].Visible = false;
             dgvPedidos.Columns["EstadoID"].Visible = false;
 
+            // Eliminar columnas botones anteriores si existen para evitar duplicados
+            var btnCols = new[] { "AsignarDelivery", "AceptarPedido", "CancelarPedido" };
+            foreach (var btnCol in btnCols)
+            {
+                if (dgvPedidos.Columns.Contains(btnCol))
+                    dgvPedidos.Columns.Remove(btnCol);
+            }
+
             // Agregar botones según rol
-            if (rolId == 1 || rolId == 4) // Admin: botón para asignar delivery
+            if (rolId == 1 || rolId == 4) // Admin o Proveedor
             {
                 var btnAsignar = new DataGridViewButtonColumn
                 {
@@ -90,15 +99,29 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
                     HeaderText = "Acción",
                     Text = "Asignar Delivery",
                     UseColumnTextForButtonValue = true,
-                    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                    FlatStyle = FlatStyle.Standard
                 };
                 dgvPedidos.Columns.Add(btnAsignar);
 
                 foreach (DataGridViewRow row in dgvPedidos.Rows)
                 {
                     int estadoId = Convert.ToInt32(row.Cells["EstadoID"].Value);
-                    row.Cells["AsignarDelivery"].ReadOnly = estadoId != 1;
-                    row.Cells["AsignarDelivery"].Style.ForeColor = estadoId == 1 ? Color.Black : Color.Gray;
+                    var cell = row.Cells["AsignarDelivery"];
+
+                    // Solo cambia el estilo, pero el botón sigue visible siempre
+                    if (rolId == 1) // Admin: solo habilitar si estado es pendiente (1)
+                    {
+                        cell.ReadOnly = estadoId != 1;
+                        cell.Style.ForeColor = estadoId == 1 ? Color.Black : Color.Gray;
+                        cell.Style.BackColor = estadoId == 1 ? Color.LightGreen : Color.LightGray;
+                    }
+                    else if (rolId == 4) // Proveedor: solo habilitar si estado es pendiente (1)
+                    {
+                        cell.ReadOnly = estadoId != 1;
+                        cell.Style.ForeColor = estadoId == 1 ? Color.Black : Color.Gray;
+                        cell.Style.BackColor = estadoId == 1 ? Color.LightGreen : Color.LightGray;
+                    }
                 }
             }
             else if (rolId == 2) // Delivery / Empleado: botones aceptar y cancelar pedido
@@ -109,7 +132,8 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
                     HeaderText = "Entregar Delivery",
                     Text = "Entregar Delivery",
                     UseColumnTextForButtonValue = true,
-                    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                    FlatStyle = FlatStyle.Standard
                 };
                 dgvPedidos.Columns.Add(btnAceptar);
 
@@ -119,7 +143,8 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
                     HeaderText = "Cancelar",
                     Text = "Cancelar",
                     UseColumnTextForButtonValue = true,
-                    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                    FlatStyle = FlatStyle.Standard
                 };
                 dgvPedidos.Columns.Add(btnCancelar);
 
@@ -128,13 +153,17 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
                     int estadoId = Convert.ToInt32(row.Cells["EstadoID"].Value);
 
                     // Solo habilitar Aceptar si estado es aceptado (2)
-                    row.Cells["AceptarPedido"].ReadOnly = estadoId != 2;
-                    row.Cells["AceptarPedido"].Style.ForeColor = estadoId == 2 ? Color.Black : Color.Gray;
+                    var aceptarCell = row.Cells["AceptarPedido"];
+                    aceptarCell.ReadOnly = estadoId != 2;
+                    aceptarCell.Style.ForeColor = estadoId == 2 ? Color.Black : Color.Gray;
+                    aceptarCell.Style.BackColor = estadoId == 2 ? Color.LightGreen : Color.LightGray;
 
                     // Solo habilitar Cancelar si estado es aceptado (2) o pendiente (1)
-                    bool canCancel = estadoId == 1 || estadoId == 2; // <-- Aquí la restricción para no permitir cancelar entregados
-                    row.Cells["CancelarPedido"].ReadOnly = !canCancel;
-                    row.Cells["CancelarPedido"].Style.ForeColor = canCancel ? Color.Black : Color.Gray;
+                    bool canCancel = estadoId == 1 || estadoId == 2;
+                    var cancelarCell = row.Cells["CancelarPedido"];
+                    cancelarCell.ReadOnly = !canCancel;
+                    cancelarCell.Style.ForeColor = canCancel ? Color.Black : Color.Gray;
+                    cancelarCell.Style.BackColor = canCancel ? Color.LightCoral : Color.LightGray;
                 }
             }
             else if (rolId == 3) // Cliente: mostrar columna DeliveryNombre
@@ -157,13 +186,17 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
 
             if (rolId == 1 || rolId == 4) // Admin o Proveedor
             {
-                var columnName = dgvPedidos.Columns[e.ColumnIndex].Name;
+                int pedidoId = Convert.ToInt32(dgvPedidos.Rows[e.RowIndex].Cells["PedidoID"].Value);
+                int estadoId = Convert.ToInt32(dgvPedidos.Rows[e.RowIndex].Cells["EstadoID"].Value);
 
-                if (columnName == "AsignarDelivery")
+                // 👇 Nueva validación
+                if (estadoId != 1)
                 {
-                    int pedidoId = Convert.ToInt32(dgvPedidos.Rows[e.RowIndex].Cells["PedidoID"].Value);
-                    AsignarDelivery(pedidoId);
+                    MessageBox.Show("Solo se puede asignar delivery a pedidos pendientes.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
+
+                AsignarDelivery(pedidoId);
             }
 
             if (rolId == 2) // Delivery - aceptar o cancelar
@@ -174,28 +207,36 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
 
                 if (columnName == "AceptarPedido" && estadoId == 2) // Sólo aceptar si está en proceso (asignado)
                 {
-                    bool exito = _pedidoService.CambiarEstadoPedido(pedidoId, 3, DateTime.Now); // 3 = entregado + fecha y hora actual
-                    if (exito)
+                    var confirm = MessageBox.Show("¿Confirmas que entregaste este pedido?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (confirm == DialogResult.Yes)
                     {
-                        MessageBox.Show("Pedido entregado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        CargarPedidosEnGrid();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Error al entregar el pedido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        bool exito = _pedidoService.CambiarEstadoPedido(pedidoId, 3, DateTime.Now); // 3 = entregado + fecha y hora actual
+                        if (exito)
+                        {
+                            MessageBox.Show("Pedido entregado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            CargarPedidosEnGrid();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error al entregar el pedido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                 }
-                else if (columnName == "CancelarPedido" && (estadoId == 1 || estadoId == 2)) // <-- Quité estadoId == 3 para impedir cancelar entregados
+                else if (columnName == "CancelarPedido" && (estadoId == 1 || estadoId == 2))
                 {
-                    bool exito = _pedidoService.CambiarEstadoPedido(pedidoId, 4); // 4 = cancelado
-                    if (exito)
+                    var confirm = MessageBox.Show("¿Estás seguro que deseas cancelar este pedido?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (confirm == DialogResult.Yes)
                     {
-                        MessageBox.Show("Pedido cancelado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        CargarPedidosEnGrid();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Error al cancelar el pedido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        bool exito = _pedidoService.CambiarEstadoPedido(pedidoId, 4); // 4 = cancelado
+                        if (exito)
+                        {
+                            MessageBox.Show("Pedido cancelado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            CargarPedidosEnGrid();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error al cancelar el pedido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                 }
             }
@@ -257,6 +298,74 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
                         MessageBox.Show("Error al asignar el delivery.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
+            }
+        }
+
+
+        private void dgvPedidos_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0) return; // ignorar encabezado
+
+            var dgv = sender as DataGridView;
+
+            // Validar índice de columna
+            if (e.ColumnIndex < 0 || e.ColumnIndex >= dgv.Columns.Count)
+                return;
+
+            // Validar que la columna "EstadoID" exista
+            if (!dgv.Columns.Contains("EstadoID"))
+                return;
+
+            // Validar índice de fila
+            if (e.RowIndex >= dgv.Rows.Count)
+                return;
+
+            // Validar valor de la celda "EstadoID"
+            var estadoCell = dgv.Rows[e.RowIndex].Cells["EstadoID"];
+            if (estadoCell.Value == null || estadoCell.Value == DBNull.Value)
+                return;
+
+            // Validar si la columna actual es alguna de las columnas botón
+            string colName = dgv.Columns[e.ColumnIndex].Name;
+            if (colName == "AsignarDelivery" || colName == "AceptarPedido" || colName == "CancelarPedido")
+            {
+                e.PaintBackground(e.CellBounds, true);
+
+                int estadoId = Convert.ToInt32(estadoCell.Value);
+
+                Color backColor = Color.LightGray;
+                Color foreColor = Color.Black;
+                string text = dgv.Columns[e.ColumnIndex].HeaderText;
+
+                if (colName == "AsignarDelivery")
+                {
+                    backColor = (estadoId == 1) ? Color.DarkBlue : Color.DarkBlue;
+                    foreColor = (estadoId == 1) ? Color.White : Color.White;
+                    text = "Asignar Delivery";
+                }
+                else if (colName == "AceptarPedido")
+                {
+                    backColor = (estadoId == 2) ? Color.LightGreen : Color.LightGray;
+                    foreColor = (estadoId == 2) ? Color.Black : Color.Gray;
+                    text = "Entregar Delivery";
+                }
+                else if (colName == "CancelarPedido")
+                {
+                    bool canCancel = (estadoId == 1 || estadoId == 2);
+                    backColor = canCancel ? Color.LightCoral : Color.LightGray;
+                    foreColor = canCancel ? Color.Black : Color.Gray;
+                    text = "Cancelar";
+                }
+
+                using (Brush backBrush = new SolidBrush(backColor))
+                {
+                    e.Graphics.FillRectangle(backBrush, e.CellBounds);
+                }
+
+                TextRenderer.DrawText(e.Graphics, text, e.CellStyle.Font, e.CellBounds, foreColor,
+                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+
+                e.Handled = true;
             }
         }
 
