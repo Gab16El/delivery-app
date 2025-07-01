@@ -14,6 +14,8 @@ public class Pedido
 
     public int ZonaID { get; set; }
     public Zona Zona { get; set; }
+
+    public string? Referencia { get; set; }
     public int EstadoID { get; set; }
     public EstadoPedido Estado { get; set; }
     public DateTime FechaPedido { get; set; }

@@ -65,6 +65,7 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
                 Productos = string.Join(", ", p.Detalles.Select(d => d.Producto?.Nombre)),
                 Proveedores = string.Join(", ", p.Detalles.Select(d => d.Producto?.Proveedor?.Nombre).Distinct()),
                 Zona = p.Zona?.Nombre,
+                Referencia = string.IsNullOrWhiteSpace(p.Referencia) ? "Sin referencia" : p.Referencia, 
                 EstadoID = p.EstadoID,
                 Estado = p.Estado?.Estado,
                 p.FechaPedido,
@@ -189,7 +190,7 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
                 int pedidoId = Convert.ToInt32(dgvPedidos.Rows[e.RowIndex].Cells["PedidoID"].Value);
                 int estadoId = Convert.ToInt32(dgvPedidos.Rows[e.RowIndex].Cells["EstadoID"].Value);
 
-                // 👇 Nueva validación
+                // Nueva validación para el boton de asignar delivery
                 if (estadoId != 1)
                 {
                     MessageBox.Show("Solo se puede asignar delivery a pedidos pendientes.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -339,8 +340,8 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
 
                 if (colName == "AsignarDelivery")
                 {
-                    backColor = (estadoId == 1) ? Color.DarkBlue : Color.DarkBlue;
-                    foreColor = (estadoId == 1) ? Color.White : Color.White;
+                    backColor = (estadoId == 1) ? Color.LightBlue : Color.LightBlue;
+                    foreColor = (estadoId == 1) ? Color.Black : Color.Black;
                     text = "Asignar Delivery";
                 }
                 else if (colName == "AceptarPedido")
@@ -393,8 +394,16 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
 
             int cantidad = (int)nudCantidad.Value;
             int clienteId = Program.UsuarioLogueado.UsuarioID;
+            string referencia = txtReferencia.Text.Trim();
 
-            var exito = _pedidoService.RegistrarPedido(clienteId, producto.ProductoID, zona.ZonaID, cantidad);
+            if (referencia.Length < 5)
+            {
+                MessageBox.Show("La dirección de referencia debe tener al menos 5 carácteres.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtReferencia.Focus();
+                return;
+            }
+
+            var exito = _pedidoService.RegistrarPedido(clienteId, producto.ProductoID, zona.ZonaID, cantidad, referencia);
 
             if (exito)
             {

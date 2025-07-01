@@ -34,20 +34,21 @@ namespace DeliveryAppGrupo0008.Services
         }
 
 
-        public bool RegistrarPedido(int clienteId, int productoId, int zonaId, int cantidad)
+        public bool RegistrarPedido(int clienteId, int productoId, int zonaId, int cantidad, string referencia)
         {
             try
             {
                 var producto = _context.Productos.FirstOrDefault(p => p.ProductoID == productoId);
                 var zona = _context.Zonas.FirstOrDefault(z => z.ZonaID == zonaId);
 
-                if (producto == null || zona == null || cantidad <= 0)
+                if (producto == null || zona == null || cantidad <= 0 || referencia == null)
                     return false;
 
                 var pedido = new Pedido
                 {
                     ClienteID = clienteId,
                     ZonaID = zonaId,
+                    Referencia = referencia,
                     EstadoID = 1, // Pendiente
                     FechaPedido = DateTime.Now,
                     Total = (producto.Precio * cantidad) + zona.PrecioDelivery,
