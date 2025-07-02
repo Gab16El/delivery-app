@@ -82,12 +82,32 @@ namespace DeliveryAppGrupo0008.Forms.reportes
 
                 // Mostrar botón para generar PDF
                 btnGenerarPdf.Visible = true;
+                btnGenerarExcel.Visible = true;
                 rutaPdfGenerado = null; // resetear ruta de PDF
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al generar el reporte: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnGenerarExcel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string carpetaDestino = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                string nombreArchivo = $"Reporte_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+                string rutaCompleta = Path.Combine(carpetaDestino, nombreArchivo);
+
+                GenerarExcel(rutaCompleta, totalVentasGuardado, productosPdfGuardado, mejorClienteGuardado, totalGastadoClienteGuardado);
+
+                MessageBox.Show($"Excel generado correctamente en:\n{rutaCompleta}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Process.Start(new ProcessStartInfo { FileName = rutaCompleta, UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al generar el Excel:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -205,6 +225,50 @@ namespace DeliveryAppGrupo0008.Forms.reportes
                 doc?.Close();
                 pdf?.Close();
                 writer?.Close();
+            }
+        }
+
+        private void GenerarExcel(string rutaArchivo, decimal totalVentas, IEnumerable<(string Producto, int Cantidad)> topProductos, string mejorCliente, decimal totalGastadoCliente)
+        {
+            try
+            {
+                using var workbook = new ClosedXML.Excel.XLWorkbook();
+                var worksheet = workbook.Worksheets.Add("Reporte Ventas");
+
+                int row = 1;
+
+                worksheet.Cell(row++, 1).Value = "Reporte de Ventas";
+                worksheet.Range("A1:B1").Merge().Style.Font.SetBold().Font.FontSize = 16;
+                worksheet.Cell(row++, 1).Value = $"Total Vendido:";
+                worksheet.Cell(row - 1, 2).Value = totalVentas;
+
+                worksheet.Cell(row++, 1).Value = "Mejor Cliente:";
+                worksheet.Cell(row - 1, 2).Value = mejorCliente;
+
+                worksheet.Cell(row++, 1).Value = "Total Gastado por Cliente:";
+                worksheet.Cell(row - 1, 2).Value = totalGastadoCliente;
+
+                row++; // línea en blanco
+
+                worksheet.Cell(row, 1).Value = "Producto";
+                worksheet.Cell(row, 2).Value = "Cantidad Vendida";
+                worksheet.Range(row, 1, row, 2).Style.Font.SetBold();
+                row++;
+
+                foreach (var item in topProductos)
+                {
+                    worksheet.Cell(row, 1).Value = item.Producto;
+                    worksheet.Cell(row, 2).Value = item.Cantidad;
+                    row++;
+                }
+
+                worksheet.Columns().AdjustToContents();
+
+                workbook.SaveAs(rutaArchivo);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al generar el Excel:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

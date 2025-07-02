@@ -110,7 +110,8 @@ namespace DeliveryAppGrupo0008.Forms.usuarios
             {
                 // Proveedor solo ve sus trabajadores
                 dgvUsuarios.DataSource = _userService.GetTrabajadoresDeProveedor(Program.UsuarioLogueado.UsuarioID)
-                    .Select(u => new {
+                    .Select(u => new
+                    {
                         u.UsuarioID,
                         u.Nombre,
                         u.Email,
@@ -137,7 +138,8 @@ namespace DeliveryAppGrupo0008.Forms.usuarios
                         .ToList();
                 }
 
-                dgvUsuarios.DataSource = usuarios.Select(u => new {
+                dgvUsuarios.DataSource = usuarios.Select(u => new
+                {
                     u.UsuarioID,
                     u.Nombre,
                     u.Email,
@@ -238,6 +240,11 @@ namespace DeliveryAppGrupo0008.Forms.usuarios
             {
                 CargarUsuariosEnGrid(roleId);
             }
+        }
+
+        private void lblNombre_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

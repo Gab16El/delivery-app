@@ -46,10 +46,10 @@
         {
             tabControlUsuarios = new TabControl();
             tabPageLista = new TabPage();
-            panelFiltro = new Panel();
-            cmbFiltroRol = new ComboBox();
             panelUsuarios = new Panel();
             dgvUsuarios = new DataGridView();
+            panelFiltro = new Panel();
+            cmbFiltroRol = new ComboBox();
             tabPageAgregar = new TabPage();
             lblNombre = new Label();
             txtNombre = new TextBox();
@@ -68,9 +68,9 @@
             btnAgregarUsuario = new Button();
             tabControlUsuarios.SuspendLayout();
             tabPageLista.SuspendLayout();
-            panelFiltro.SuspendLayout();
             panelUsuarios.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvUsuarios).BeginInit();
+            panelFiltro.SuspendLayout();
             tabPageAgregar.SuspendLayout();
             SuspendLayout();
             // 
@@ -97,6 +97,28 @@
             tabPageLista.Text = "Lista de Usuarios";
             tabPageLista.UseVisualStyleBackColor = true;
             // 
+            // panelUsuarios
+            // 
+            panelUsuarios.BorderStyle = BorderStyle.FixedSingle;
+            panelUsuarios.Controls.Add(dgvUsuarios);
+            panelUsuarios.Dock = DockStyle.Fill;
+            panelUsuarios.Location = new Point(3, 43);
+            panelUsuarios.Margin = new Padding(20);
+            panelUsuarios.Name = "panelUsuarios";
+            panelUsuarios.Size = new Size(786, 376);
+            panelUsuarios.TabIndex = 1;
+            // 
+            // dgvUsuarios
+            // 
+            dgvUsuarios.Dock = DockStyle.Fill;
+            dgvUsuarios.Location = new Point(0, 0);
+            dgvUsuarios.MultiSelect = false;
+            dgvUsuarios.Name = "dgvUsuarios";
+            dgvUsuarios.ReadOnly = true;
+            dgvUsuarios.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvUsuarios.Size = new Size(784, 374);
+            dgvUsuarios.TabIndex = 0;
+            // 
             // panelFiltro
             // 
             panelFiltro.Controls.Add(cmbFiltroRol);
@@ -115,28 +137,6 @@
             cmbFiltroRol.Size = new Size(200, 23);
             cmbFiltroRol.TabIndex = 0;
             cmbFiltroRol.SelectedIndexChanged += CmbFiltroRol_SelectedIndexChanged;
-            // 
-            // panelUsuarios
-            // 
-            panelUsuarios.BorderStyle = BorderStyle.FixedSingle;
-            panelUsuarios.Controls.Add(dgvUsuarios);
-            panelUsuarios.Dock = DockStyle.Fill;
-            panelUsuarios.Location = new Point(3, 3);
-            panelUsuarios.Margin = new Padding(20);
-            panelUsuarios.Name = "panelUsuarios";
-            panelUsuarios.Size = new Size(786, 416);
-            panelUsuarios.TabIndex = 1;
-            // 
-            // dgvUsuarios
-            // 
-            dgvUsuarios.Dock = DockStyle.Fill;
-            dgvUsuarios.Location = new Point(0, 0);
-            dgvUsuarios.MultiSelect = false;
-            dgvUsuarios.Name = "dgvUsuarios";
-            dgvUsuarios.ReadOnly = true;
-            dgvUsuarios.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvUsuarios.Size = new Size(784, 414);
-            dgvUsuarios.TabIndex = 0;
             // 
             // tabPageAgregar
             // 
@@ -168,13 +168,14 @@
             lblNombre.AutoSize = true;
             lblNombre.Location = new Point(40, 40);
             lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(54, 15);
+            lblNombre.Size = new Size(59, 15);
             lblNombre.TabIndex = 0;
-            lblNombre.Text = "Nombre:";
+            lblNombre.Text = "Nombres:";
+            lblNombre.Click += lblNombre_Click;
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(161, 22);
+            txtNombre.Location = new Point(186, 32);
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(200, 23);
             txtNombre.TabIndex = 1;
@@ -190,7 +191,7 @@
             // 
             // txtEmail
             // 
-            txtEmail.Location = new Point(161, 62);
+            txtEmail.Location = new Point(186, 72);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(200, 23);
             txtEmail.TabIndex = 3;
@@ -198,7 +199,7 @@
             // lblPassword
             // 
             lblPassword.AutoSize = true;
-            lblPassword.Location = new Point(40, 163);
+            lblPassword.Location = new Point(40, 261);
             lblPassword.Name = "lblPassword";
             lblPassword.Size = new Size(70, 15);
             lblPassword.TabIndex = 4;
@@ -206,7 +207,7 @@
             // 
             // txtPassword
             // 
-            txtPassword.Location = new Point(161, 145);
+            txtPassword.Location = new Point(186, 253);
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '*';
             txtPassword.Size = new Size(200, 23);
@@ -215,7 +216,7 @@
             // lblConfirmPassword
             // 
             lblConfirmPassword.AutoSize = true;
-            lblConfirmPassword.Location = new Point(40, 280);
+            lblConfirmPassword.Location = new Point(40, 301);
             lblConfirmPassword.Name = "lblConfirmPassword";
             lblConfirmPassword.Size = new Size(125, 15);
             lblConfirmPassword.TabIndex = 6;
@@ -223,7 +224,7 @@
             // 
             // txtConfirmPassword
             // 
-            txtConfirmPassword.Location = new Point(161, 262);
+            txtConfirmPassword.Location = new Point(186, 298);
             txtConfirmPassword.Name = "txtConfirmPassword";
             txtConfirmPassword.PasswordChar = '*';
             txtConfirmPassword.Size = new Size(200, 23);
@@ -240,7 +241,7 @@
             // 
             // cmbRol
             // 
-            cmbRol.Location = new Point(161, 107);
+            cmbRol.Location = new Point(186, 117);
             cmbRol.Name = "cmbRol";
             cmbRol.Size = new Size(200, 23);
             cmbRol.TabIndex = 9;
@@ -248,7 +249,7 @@
             // lblTelefono
             // 
             lblTelefono.AutoSize = true;
-            lblTelefono.Location = new Point(40, 200);
+            lblTelefono.Location = new Point(40, 171);
             lblTelefono.Name = "lblTelefono";
             lblTelefono.Size = new Size(56, 15);
             lblTelefono.TabIndex = 10;
@@ -256,7 +257,7 @@
             // 
             // txtTelefono
             // 
-            txtTelefono.Location = new Point(161, 182);
+            txtTelefono.Location = new Point(186, 163);
             txtTelefono.Name = "txtTelefono";
             txtTelefono.Size = new Size(200, 23);
             txtTelefono.TabIndex = 11;
@@ -264,7 +265,7 @@
             // lblDireccion
             // 
             lblDireccion.AutoSize = true;
-            lblDireccion.Location = new Point(40, 240);
+            lblDireccion.Location = new Point(40, 216);
             lblDireccion.Name = "lblDireccion";
             lblDireccion.Size = new Size(60, 15);
             lblDireccion.TabIndex = 12;
@@ -272,14 +273,14 @@
             // 
             // txtDireccion
             // 
-            txtDireccion.Location = new Point(161, 222);
+            txtDireccion.Location = new Point(186, 208);
             txtDireccion.Name = "txtDireccion";
             txtDireccion.Size = new Size(200, 23);
             txtDireccion.TabIndex = 13;
             // 
             // btnAgregarUsuario
             // 
-            btnAgregarUsuario.Location = new Point(98, 310);
+            btnAgregarUsuario.Location = new Point(122, 352);
             btnAgregarUsuario.Name = "btnAgregarUsuario";
             btnAgregarUsuario.Size = new Size(157, 30);
             btnAgregarUsuario.TabIndex = 14;
@@ -297,9 +298,9 @@
             Load += GestionUsuariosForm_Load;
             tabControlUsuarios.ResumeLayout(false);
             tabPageLista.ResumeLayout(false);
-            panelFiltro.ResumeLayout(false);
             panelUsuarios.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvUsuarios).EndInit();
+            panelFiltro.ResumeLayout(false);
             tabPageAgregar.ResumeLayout(false);
             tabPageAgregar.PerformLayout();
             ResumeLayout(false);

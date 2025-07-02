@@ -5,6 +5,7 @@
         private System.ComponentModel.IContainer components = null;
         private System.Windows.Forms.ComboBox cmbTipoReporte;
         private System.Windows.Forms.Button btnGenerar;
+        private System.Windows.Forms.Button btnGenerarExcel;
         private System.Windows.Forms.DataGridView dgvReporte;
         private System.Windows.Forms.Label lblResumen;
         private System.Windows.Forms.Button btnGenerarPdf;
@@ -62,6 +63,18 @@
             this.btnGenerarPdf.Click += new System.EventHandler(this.btnGenerarPdf_Click);
 
             // 
+            // btnGenerarExcel
+            // 
+            this.btnGenerarExcel = new System.Windows.Forms.Button();
+            this.btnGenerarExcel.Location = new System.Drawing.Point(480, 20);
+            this.btnGenerarExcel.Name = "btnGenerarExcel";
+            this.btnGenerarExcel.Size = new System.Drawing.Size(120, 24);
+            this.btnGenerarExcel.Text = "Generar Excel";
+            this.btnGenerarExcel.UseVisualStyleBackColor = true;
+            this.btnGenerarExcel.Visible = false;  // oculto hasta generar el reporte
+            this.btnGenerarExcel.Click += new System.EventHandler(this.btnGenerarExcel_Click);
+
+            // 
             // dgvReporte
             // 
             this.dgvReporte.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -85,6 +98,7 @@
             this.Controls.Add(this.cmbTipoReporte);
             this.Controls.Add(this.btnGenerar);
             this.Controls.Add(this.btnGenerarPdf);
+            this.Controls.Add(this.btnGenerarExcel);
             this.Controls.Add(this.dgvReporte);
             this.Controls.Add(this.lblResumen);
             this.Name = "GestionReportesForm";
