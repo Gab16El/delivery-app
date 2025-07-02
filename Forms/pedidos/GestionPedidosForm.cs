@@ -22,6 +22,7 @@ namespace DeliveryAppGrupo0008.Forms.pedidos
             nudCantidad.ValueChanged += (s, e) => CalcularTotal();
             btnAgregarPedido.Click += BtnAgregarPedido_Click;
             dgvPedidos.CellContentClick += DgvPedidos_CellContentClick;
+
         }
 
         private void GestionPedidosForm_Load(object sender, System.EventArgs e)

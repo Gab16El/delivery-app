@@ -105,5 +105,17 @@ namespace DeliveryAppGrupo0008.Services
                 .AsNoTracking()
                 .ToList();
         }
+
+        public bool EliminarUsuario(int usuarioId)
+        {
+            var usuario = _context.Usuarios.Find(usuarioId);
+
+            if (usuario == null)
+                return false;
+
+            _context.Usuarios.Remove(usuario);
+            _context.SaveChanges();
+            return true;
+        }
     }
 }
